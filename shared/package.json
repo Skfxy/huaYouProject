@@ -1,0 +1,8 @@
+{
+  "name": "@huaYou/shared",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "根目录共享模块 - 类型定义 / 常量 / 纯工具函数",
+  "keywords": ["shared", "types", "utils"]
+}

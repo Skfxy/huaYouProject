@@ -1,0 +1,465 @@
+[
+  {
+    "id": "scene_0_1",
+    "name": "加班的深夜",
+    "description": "第一章开场 · 现实",
+    "text": "晚上十点十七分，地铁像沙丁鱼罐头，把你挤成一张扁平的纸。\n\n今天的第四个会结束时，窗外的天已经黑透了。方案第11版仍被驳回，理由是「不够有生命力」。\n你盯着屏幕上那句批注，忽然想起手机里存着的那张海边壁纸——它辽阔、自由，却仿佛比你更活生生。\n\n回到出租屋，鞋一踢，瘫在床上。刷了半小时短视频，越刷越烦躁。\n同学群里又在晒年终奖，当年那个成绩不如你的室友，进了互联网公司，现在已经年薪百万了。\n\n「凭什么啊……当年我要是也学了计算机，毕业去写代码，哪会有今天？」\n「什么破工作，钱少事多还受气。要是能重来一次，我绝对选程序员，早就财务自由了！」\n\n你忿忿不平地嘟囔完，把手机往枕头边一扔，带着怨气沉沉睡去。\n意识模糊前，你好像听到了一声很轻的、类似电流的滋滋声……",
+    "options": [
+      {
+        "id": "option_0_1",
+        "text": "继续沉睡",
+        "effects": { "energy": 10, "mood": 5 },
+        "nextEvent": "scene_1_1"
+      }
+    ],
+    "isMain": true,
+    "priority": 100
+  },
+  {
+    "id": "scene_1_1",
+    "name": "不对的早晨",
+    "description": "第一章 · 醒来",
+    "text": "刺眼的阳光把你晃醒。\n你眯着眼摸手机，想看看几点了——屏幕亮起的瞬间，你愣住了。\n\n手机屏幕显示：\n日期：2018年6月1日 周五 7:32\n锁屏壁纸：还是你大学时候用的那张动漫图\n通知栏：「四六级成绩可查询」「毕业季招聘会下周一举办」\n\n这不可能……你明明已经毕业三年了。",
+    "options": [
+      {
+        "id": "option_1_1_1",
+        "text": "以为还没睡醒，掐自己一把",
+        "effects": { "mood": -5 },
+        "flags": ["confirmed_dream"],
+        "nextEvent": "scene_1_2"
+      },
+      {
+        "id": "option_1_1_2",
+        "text": "翻下床看宿舍环境",
+        "effects": { "energy": -5 },
+        "flags": ["confirmed_dorm"],
+        "nextEvent": "scene_1_2"
+      },
+      {
+        "id": "option_1_1_3",
+        "text": "以为是手机出bug了，重启试试",
+        "effects": { "energy": -3 },
+        "flags": ["phone_bug"],
+        "nextEvent": "scene_1_2"
+      }
+    ],
+    "isMain": true,
+    "priority": 100
+  },
+  {
+    "id": "scene_1_2",
+    "name": "确认穿越",
+    "description": "第一章 · 醒来",
+    "text": "你冲出宿舍走廊，一切都熟悉又陌生。\n走廊尽头的公告栏贴着「2018届毕业生离校须知」，宿舍楼下的食堂飘着你好几年没闻到的豆浆香味。\n\n室友小张从水房回来，端着牙缸一脸懵逼地看着你。\n\n小张：「大清早的你发什么疯？答辩都过了，不多睡会儿？」\n「对了，你昨天说的那个招聘会，到底去不去啊？学机械的找工作太难了，我打算转行试试运营。」\n\n你看着眼前这个熟悉的面孔，心跳加速——这是真的，你真的回到了2018年。",
+    "options": [
+      {
+        "id": "option_1_2_1",
+        "text": "抓住小张问今天日期，确认是不是2018年",
+        "effects": { "mood": 10 },
+        "flags": ["confirmed_2018", "friend_xiaozhang"],
+        "skillEffects": { "social": 2 },
+        "nextEvent": "scene_1_3"
+      },
+      {
+        "id": "option_1_2_2",
+        "text": "冷静下来，假装没事，先去食堂吃早饭",
+        "effects": { "energy": 5, "health": 3 },
+        "flags": ["friend_xiaozhang"],
+        "nextEvent": "scene_1_3"
+      },
+      {
+        "id": "option_1_2_3",
+        "text": "直接问小张：如果我现在转行学编程，来得及吗？",
+        "effects": { "mood": 5 },
+        "flags": ["friend_xiaozhang", "asked_about_programming"],
+        "skillEffects": { "social": 3 },
+        "nextEvent": "scene_1_3"
+      }
+    ],
+    "isMain": true,
+    "priority": 100
+  },
+  {
+    "id": "scene_1_3",
+    "name": "第一个抉择",
+    "description": "第一章 · 醒来",
+    "text": "你坐在食堂里，面前是三块五的早餐套餐。\n脑子很乱，但有一件事越来越清晰——你真的回到了2018年，回到了毕业前夕。\n\n这一年，互联网红利还在顶峰，字节跳动还在疯狂招人，拼多多刚成立三年，小程序刚刚火起来。\n一切都还来得及。\n\n你掏出手机翻了翻日历——距离离校还有20天。\n你的专业是机械工程，校招offer已经签了一家工厂，月薪4500。\n但你知道，只要能转行进入互联网，三年后的薪资可能是现在的三倍、五倍，甚至更多。\n\n这是你人生最重要的十字路口。",
+    "options": [
+      {
+        "id": "option_1_3_1",
+        "text": "立刻转行程序员——从零开始学代码，校招冲互联网公司",
+        "effects": { "mood": 15, "energy": -10 },
+        "skillEffects": { "programming": 20 },
+        "flags": ["route_programmer"],
+        "nextEvent": "scene_1_4_programmer"
+      },
+      {
+        "id": "option_1_3_2",
+        "text": "先去签好的公司上班，业余时间学编程——保底offer不丢",
+        "effects": { "mood": 5, "energy": -5, "money": 4500 },
+        "skillEffects": { "programming": 10 },
+        "flags": ["route_part_time"],
+        "nextEvent": "scene_1_4_parttime"
+      },
+      {
+        "id": "option_1_3_3",
+        "text": "试试互联网运营/产品——技术门槛低，先入行再说",
+        "effects": { "mood": 8, "energy": -3 },
+        "skillEffects": { "operation": 20 },
+        "flags": ["route_operation"],
+        "nextEvent": "scene_1_4_operation"
+      },
+      {
+        "id": "option_1_3_4",
+        "text": "享受最后的大学时光——反正重来了，先玩爽了再说",
+        "effects": { "mood": 20, "energy": 10, "health": 5 },
+        "flags": ["route_delay"],
+        "nextEvent": "scene_1_4_delay"
+      }
+    ],
+    "isMain": true,
+    "priority": 100
+  },
+  {
+    "id": "scene_1_4_programmer",
+    "name": "程序员之路",
+    "description": "第一章 · 醒来",
+    "text": "你做出了决定——转行程序员。\n\n回到宿舍，你立刻打开电脑，搜索「零基础学编程」。满屏的课程广告让你眼花缭乱：前端、后端、Python、Java……\n\n你深吸一口气，告诉自己：这一次，一定要抓住机会。\n\n距离离校还有20天，你要在这20天里，学会编程的基础知识，拿到互联网公司的面试机会。\n\n新的故事，从此刻开始……",
+    "options": [
+      {
+        "id": "option_1_4_1",
+        "text": "开始学习编程",
+        "effects": { "mood": 10, "energy": -5 },
+        "skillEffects": { "programming": 15 },
+        "nextEvent": "scene_1_5"
+      }
+    ],
+    "isMain": true,
+    "priority": 100
+  },
+  {
+    "id": "scene_1_4_parttime",
+    "name": "稳扎稳打",
+    "description": "第一章 · 醒来",
+    "text": "你做出了决定——先工作，再转行。\n\n这个选择意味着你要过一段双线作战的日子：白天在工厂上班，晚上回家自学编程。\n\n很苦，但你知道，这是最稳妥的路。\n\n你打开手机，看了看银行余额——3200元。这是你毕业前的全部身家。\n\n新的故事，从此刻开始……",
+    "options": [
+      {
+        "id": "option_1_4_1",
+        "text": "准备开始双线生活",
+        "effects": { "mood": 5 },
+        "nextEvent": "scene_1_5"
+      }
+    ],
+    "isMain": true,
+    "priority": 100
+  },
+  {
+    "id": "scene_1_4_operation",
+    "name": "运营之路",
+    "description": "第一章 · 醒来",
+    "text": "你做出了决定——试试运营。\n\n运营不需要写代码，但需要懂用户、懂内容、懂数据。\n\n你打开手机，搜索「互联网运营入门」。公众号运营、内容运营、用户运营……\n\n你告诉自己：先入行，再发展。\n\n新的故事，从此刻开始……",
+    "options": [
+      {
+        "id": "option_1_4_1",
+        "text": "开始学习运营",
+        "effects": { "mood": 10 },
+        "skillEffects": { "operation": 15 },
+        "nextEvent": "scene_1_5"
+      }
+    ],
+    "isMain": true,
+    "priority": 100
+  },
+  {
+    "id": "scene_1_4_delay",
+    "name": "享受当下",
+    "description": "第一章 · 醒来",
+    "text": "你做出了决定——先享受最后的大学时光。\n\n反正还有20天，急什么？\n\n你关掉手机，躺在床上，看着窗外的阳光。三年后你才明白，这20天有多珍贵。\n\n新的故事，从此刻开始……",
+    "options": [
+      {
+        "id": "option_1_4_1",
+        "text": "先玩几天再说",
+        "effects": { "mood": 10 },
+        "nextEvent": "scene_1_5"
+      }
+    ],
+    "isMain": true,
+    "priority": 100
+  },
+  {
+    "id": "scene_1_5",
+    "name": "新的开始",
+    "description": "第一章 · 结尾",
+    "text": "无论你做出了什么选择，2018年的夏天已经开始。\n\n窗外的蝉鸣声此起彼伏，阳光透过窗帘的缝隙洒在地板上。\n\n你站在人生的十字路口，这一次，你会怎么走？\n\n（第一章 · 待续）",
+    "options": [
+      {
+        "id": "option_1_5_1",
+        "text": "继续前行",
+        "effects": {},
+        "nextEvent": "chapter_end"
+      }
+    ],
+    "isMain": true,
+    "priority": 100
+  },
+  {
+    "id": "event_001",
+    "name": "室友邀请开黑",
+    "description": "随机事件 · 日常",
+    "text": "你正在宿舍里刷手机，小张从对面床铺探过头来。\n\n小张：「来一把？反正也没事干。」\n\n他的眼睛里闪着期待的光芒，显然已经等你很久了。",
+    "options": [
+      {
+        "id": "option_001_1",
+        "text": "开黑放松一下",
+        "effects": { "mood": 12, "energy": -8 },
+        "skillEffects": { "social": 3 },
+        "flags": ["played_with_xiaozhang"]
+      },
+      {
+        "id": "option_001_2",
+        "text": "不了，我还有事",
+        "effects": { "mood": -3 },
+        "skillEffects": { "social": -2 }
+      }
+    ],
+    "condition": {
+      "minEnergy": 40
+    },
+    "isRandom": true,
+    "priority": 30,
+    "cooldown": 2
+  },
+  {
+    "id": "event_002",
+    "name": "图书馆偶遇学长",
+    "description": "随机事件 · 机遇",
+    "text": "你在图书馆的自习区找了个位置坐下，正准备打开电脑学习，突然听到一个熟悉的声音。\n\n学长：「你是XX专业的学弟吧？我看你在学编程，有什么问题可以问我。」\n\n你认出他是去年毕业的学长，听说在某大厂做前端开发。\n\n他的出现，可能会改变你的命运……",
+    "options": [
+      {
+        "id": "option_002_1",
+        "text": "主动搭话请教转行经验",
+        "effects": { "mood": 8 },
+        "skillEffects": { "social": 8, "programming": 5 },
+        "flags": ["met_senior", "has_senior_contact"]
+      },
+      {
+        "id": "option_002_2",
+        "text": "默默看书，不好意思打扰",
+        "effects": {},
+        "skillEffects": { "social": -1 }
+      }
+    ],
+    "condition": {
+      "period": ["morning", "afternoon"]
+    },
+    "isRandom": true,
+    "priority": 40,
+    "cooldown": 5
+  },
+  {
+    "id": "event_003",
+    "name": "银行卡余额提醒",
+    "description": "随机事件 · 困境",
+    "text": "你正准备去食堂吃饭，手机突然震动了一下。\n\n手机屏幕显示：\n短信：【XX银行】您的账户余额为1,247.32元，已低于2000元，请注意资金安排。\n\n你愣了一下，毕业前还得交住宿费、聚餐费、可能还要买正装面试……\n钱好像不太够用了。",
+    "options": [
+      {
+        "id": "option_003_1",
+        "text": "省吃俭用，能省一点是一点",
+        "effects": { "mood": -5, "health": -2 }
+      },
+      {
+        "id": "option_003_2",
+        "text": "找家里再要点，以后会还的",
+        "effects": { "money": 1500, "mood": -3 },
+        "flags": ["asked_family_for_money"]
+      }
+    ],
+    "condition": {
+      "maxMoney": 2000
+    },
+    "isRandom": true,
+    "priority": 60,
+    "cooldown": 3
+  },
+  {
+    "id": "event_004",
+    "name": "深夜emo",
+    "description": "随机事件 · 心理",
+    "text": "你躺在床上，盯着天花板，怎么也睡不着。\n\n内心独白：\n「万一这次还是混不好怎么办？」\n「当年那个成绩不如我的室友，现在年薪百万了……」\n「我是不是又做错了选择？」\n\n焦虑像潮水一样涌来，你感到前所未有的迷茫。",
+    "options": [
+      {
+        "id": "option_004_1",
+        "text": "强迫自己睡觉，明天还要早起",
+        "effects": { "health": -5, "energy": 15 }
+      },
+      {
+        "id": "option_004_2",
+        "text": "起来刷手机分散注意力",
+        "effects": { "mood": 5, "health": -3 }
+      }
+    ],
+    "condition": {
+      "maxMood": 40,
+      "period": ["night"]
+    },
+    "isRandom": true,
+    "priority": 50,
+    "cooldown": 2
+  },
+  {
+    "id": "event_005",
+    "name": "收到面试邀请",
+    "description": "随机事件 · 机遇",
+    "text": "你正在学习，手机邮箱突然收到一封新邮件。\n\n邮件内容：\n主题：面试邀请 - XX科技有限公司\n\n尊敬的XX先生/女士：\n感谢您投递我司XX岗位，现诚邀您参加面试。\n面试时间：下周三下午2点\n面试地点：XX科技园A栋\n\n你心跳加速，这是你收到的第一个面试邀请。\n虽然是一家你没听过的小公司，但总算是个机会。",
+    "options": [
+      {
+        "id": "option_005_1",
+        "text": "认真准备，去试试",
+        "effects": { "energy": -15, "mood": 5 },
+        "flags": ["first_interview", "interview_prepared"],
+        "skillEffects": { "programming": 5 }
+      },
+      {
+        "id": "option_005_2",
+        "text": "小公司不去，等大厂",
+        "effects": { "mood": -2 },
+        "flags": ["missed_interview"]
+      }
+    ],
+    "condition": {
+      "flags": ["route_programmer", "route_operation"]
+    },
+    "isRandom": true,
+    "priority": 60,
+    "cooldown": 5
+  },
+  {
+    "id": "event_006",
+    "name": "偶遇同学",
+    "description": "随机事件 · 社交",
+    "text": "你在食堂吃饭时，偶遇了高中同学小李。\n\n小李：「哎，好久不见！你也在这所学校？」\n「我听说你签了XX工厂？待遇怎么样？」\n「我打算考研，再读三年……」\n\n你们聊起了各自的未来规划。",
+    "options": [
+      {
+        "id": "option_006_1",
+        "text": "聊聊自己的转行计划",
+        "effects": { "mood": 5 },
+        "skillEffects": { "social": 5 },
+        "flags": ["met_classmate"]
+      },
+      {
+        "id": "option_006_2",
+        "text": "简单寒暄，继续吃饭",
+        "effects": {},
+        "skillEffects": { "social": 2 }
+      }
+    ],
+    "condition": {
+      "period": ["morning", "afternoon", "evening"]
+    },
+    "isRandom": true,
+    "priority": 25,
+    "cooldown": 7
+  },
+  {
+    "id": "event_007",
+    "name": "学习疲惫",
+    "description": "随机事件 · 状态",
+    "text": "你已经连续学习了3个小时，眼睛开始发酸，脑子也转不动了。\n\n你盯着屏幕上的代码，一个简单的bug改了半小时还没改出来。\n\n「要不要休息一下？」\n「可是时间不多了……」",
+    "options": [
+      {
+        "id": "option_007_1",
+        "text": "继续坚持，再学一会儿",
+        "effects": { "energy": -10, "mood": -5 },
+        "skillEffects": { "programming": 8 }
+      },
+      {
+        "id": "option_007_2",
+        "text": "休息一下，出去走走",
+        "effects": { "energy": 10, "mood": 5, "health": 2 }
+      }
+    ],
+    "condition": {
+      "minEnergy": 50
+    },
+    "isRandom": true,
+    "priority": 35,
+    "cooldown": 1
+  },
+  {
+    "id": "event_008",
+    "name": "天气很好",
+    "description": "随机事件 · 日常",
+    "text": "今天天气特别好，阳光明媚，微风不燥。\n\n你站在宿舍阳台上，看着楼下路过的同学们，心情突然变好了。\n\n「2018年的夏天，真好啊……」",
+    "options": [
+      {
+        "id": "option_008_1",
+        "text": "深呼吸，感受这一刻",
+        "effects": { "mood": 8, "health": 2 }
+      },
+      {
+        "id": "option_008_2",
+        "text": "拍张照留念",
+        "effects": { "mood": 5 },
+        "flags": ["took_photo"]
+      }
+    ],
+    "isRandom": true,
+    "priority": 20,
+    "cooldown": 3
+  },
+  {
+    "id": "event_009",
+    "name": "食堂偶遇",
+    "description": "随机事件 · 社交",
+    "text": "你去食堂打饭时，发现忘带饭卡了。\n\n身后传来一个声音：「我帮你刷吧。」\n\n你回头一看，是一个不认识的女生，长得还挺好看。\n\n她笑着说：「没事，下次你请我就行。」",
+    "options": [
+      {
+        "id": "option_009_1",
+        "text": "感谢她，加个微信",
+        "effects": { "mood": 10 },
+        "skillEffects": { "social": 8 },
+        "flags": ["met_girl", "added_wechat"]
+      },
+      {
+        "id": "option_009_2",
+        "text": "道谢，下次还她饭钱",
+        "effects": { "mood": 5 },
+        "skillEffects": { "social": 3 }
+      }
+    ],
+    "condition": {
+      "period": ["morning", "afternoon", "evening"]
+    },
+    "isRandom": true,
+    "priority": 30,
+    "cooldown": 10
+  },
+  {
+    "id": "event_010",
+    "name": "深夜灵感",
+    "description": "随机事件 · 成长",
+    "text": "凌晨两点，你突然有了一个想法。\n\n你赶紧打开电脑，把灵感记录下来。\n\n这是一个不错的项目点子，也许可以写进简历里……",
+    "options": [
+      {
+        "id": "option_010_1",
+        "text": "立刻开始动手实现",
+        "effects": { "energy": -15, "mood": 10 },
+        "skillEffects": { "programming": 12 },
+        "flags": ["has_project_idea"]
+      },
+      {
+        "id": "option_010_2",
+        "text": "先记下来，明天再说",
+        "effects": { "mood": 3 },
+        "flags": ["has_project_idea"]
+      }
+    ],
+    "condition": {
+      "period": ["night"],
+      "minEnergy": 30
+    },
+    "isRandom": true,
+    "priority": 45,
+    "cooldown": 7
+  }
+]

@@ -1,0 +1,24 @@
+{
+  "name": "huaYou",
+  "version": "1.0.0",
+  "description": "话游 - 交互式叙事人生模拟游戏",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev:web": "pnpm --filter @huaYou/web dev",
+    "build:web": "pnpm --filter @huaYou/web build",
+    "lint": "pnpm --filter @huaYou/web lint",
+    "format": "pnpm --filter @huaYou/web format",
+    "type-check": "pnpm --filter @huaYou/web type-check"
+  },
+  "keywords": [
+    "vue3",
+    "typescript",
+    "pinia",
+    "vite",
+    "game",
+    "interactive-story"
+  ],
+  "author": "",
+  "license": "MIT"
+}

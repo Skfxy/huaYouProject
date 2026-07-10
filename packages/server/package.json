@@ -1,0 +1,13 @@
+{
+  "name": "@huaYou/server",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "nest start --watch",
+    "build": "nest build",
+    "start": "node dist/main"
+  },
+  "description": "后端服务 - 第二阶段启用",
+  "keywords": ["nestjs", "mongodb", "backend"]
+}
