@@ -5,6 +5,8 @@ import { useRouter } from "vue-router";
 import { useGameStore } from "@/stores/game.store";
 import { useSaveStore } from "@/stores/save.store";
 import { onMounted } from "vue";
+// @ts-ignore
+import homeBg from "@/assets/images/home-bg.jpg";
 
 const router = useRouter();
 const gameStore = useGameStore();
@@ -29,17 +31,21 @@ function openSettings() {
 </script>
 
 <template>
-  <div class="home-view">
+  <div class="home-view" :style="{ backgroundImage: `url(${homeBg})` }">
+    <div class="vignette"></div>
     <div class="home-content">
       <div class="title-section">
         <h1 class="game-title">话游</h1>
-        <p class="game-subtitle">交互式叙事人生模拟</p>
+        <div class="subtitle-wrap">
+          <span class="subtitle-line"></span>
+          <p class="game-subtitle">交互式叙事人生模拟</p>
+          <span class="subtitle-line"></span>
+        </div>
         <p class="game-slogan">一话一人生，一言一世界</p>
       </div>
 
-      <div class="menu-section">
+      <nav class="menu-section">
         <button class="menu-button primary" @click="startNewGame">
-          <span class="button-icon">🎮</span>
           <span class="button-text">开始游戏</span>
         </button>
 
@@ -48,15 +54,13 @@ function openSettings() {
           :disabled="saveStore.isEmpty"
           @click="loadGame"
         >
-          <span class="button-icon">📂</span>
           <span class="button-text">读取存档</span>
         </button>
 
         <button class="menu-button" @click="openSettings">
-          <span class="button-icon">⚙️</span>
           <span class="button-text">设置</span>
         </button>
-      </div>
+      </nav>
 
       <div class="footer-section">
         <p class="version">v0.1.0 MVP</p>
@@ -69,18 +73,59 @@ function openSettings() {
 <style scoped>
 .home-view {
   min-height: 100vh;
+  min-height: 100svh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3a 50%, #0a0a2a 100%);
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
+
+.vignette {
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(
+      ellipse 60% 50% at 50% 45%,
+      rgba(8, 10, 20, 0.25) 0%,
+      rgba(8, 10, 20, 0.5) 40%,
+      rgba(5, 5, 15, 0.75) 100%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.15) 0%,
+      transparent 30%,
+      transparent 70%,
+      rgba(0, 0, 0, 0.4) 100%
+    );
+  pointer-events: none;
+  z-index: 0;
 }
 
 .home-content {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 48px;
+  gap: 56px;
   padding: 40px;
+  animation: fadeInUp 1s cubic-bezier(0.22, 1, 0.36, 1) 0.3s forwards;
+  opacity: 0;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .title-section {
@@ -88,99 +133,199 @@ function openSettings() {
 }
 
 .game-title {
-  font-size: 72px;
-  font-weight: bold;
-  background: linear-gradient(90deg, #4fc3f7, #29b6f6, #03a9f4);
+  font-family: "Microsoft YaHei", "PingFang SC", "Hiragino Sans GB", "SimHei", "Heiti SC", sans-serif;
+  font-size: 120px;
+  font-weight: 900;
+  letter-spacing: 8px;
+  margin: 0;
+  background: linear-gradient(
+    180deg,
+    #ffffff 0%,
+    #f0f2f5 35%,
+    #d8dde5 65%,
+    #c0c8d4 100%
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  margin: 0;
-  text-shadow: 0 0 30px rgba(79, 195, 247, 0.5);
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.8))
+          drop-shadow(0 2px 4px rgba(0, 0, 0, 0.9));
+  animation: titleAppear 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.8s forwards;
+  opacity: 0;
+  transform: scale(0.85);
+  position: relative;
+  line-height: 1.1;
+}
+
+@keyframes titleAppear {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.subtitle-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin: 20px 0 12px;
+}
+
+.subtitle-line {
+  width: 80px;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.45)
+  );
+}
+
+.subtitle-line:last-child {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.45),
+    transparent
+  );
 }
 
 .game-subtitle {
-  font-size: 24px;
-  color: #888;
-  margin: 16px 0 0;
+  font-size: 22px;
+  font-weight: 400;
+  letter-spacing: 10px;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.9);
 }
 
 .game-slogan {
-  font-size: 16px;
-  color: #666;
-  margin: 8px 0 0;
+  font-size: 15px;
+  font-weight: 300;
+  letter-spacing: 5px;
+  color: rgba(230, 235, 245, 0.75);
+  margin: 0;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
   font-style: italic;
 }
 
 .menu-section {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  min-width: 280px;
+  gap: 4px;
+  min-width: 240px;
 }
 
 .menu-button {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  padding: 16px 32px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
-  color: #e0e0e0;
-  font-size: 18px;
+  padding: 18px 40px;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+  color: rgba(240, 245, 250, 0.82);
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 6px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  overflow: hidden;
+}
+
+.menu-button::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(140, 190, 255, 0.8),
+    transparent
+  );
+  transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  transform: translateX(-50%);
+}
+
+.menu-button::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(140, 190, 255, 0.06),
+    transparent
+  );
+  transition: left 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .menu-button:hover:not(:disabled) {
-  background: rgba(79, 195, 247, 0.1);
-  border-color: rgba(79, 195, 247, 0.5);
-  transform: translateY(-2px);
+  color: rgba(240, 245, 255, 0.95);
+  letter-spacing: 10px;
+  border-bottom-color: transparent;
+}
+
+.menu-button:hover:not(:disabled)::before {
+  width: 100%;
+}
+
+.menu-button:hover:not(:disabled)::after {
+  left: 100%;
 }
 
 .menu-button:active:not(:disabled) {
-  transform: translateY(0);
+  transform: scale(0.98);
 }
 
 .menu-button:disabled {
-  opacity: 0.5;
+  opacity: 0.3;
   cursor: not-allowed;
+  letter-spacing: 6px;
 }
 
 .menu-button.primary {
-  background: linear-gradient(
-    135deg,
-    rgba(79, 195, 247, 0.2),
-    rgba(3, 169, 244, 0.2)
-  );
-  border-color: rgba(79, 195, 247, 0.5);
+  color: rgba(180, 220, 255, 0.9);
+  border-bottom-color: rgba(140, 190, 255, 0.3);
+  font-size: 17px;
 }
 
-.menu-button.primary:hover {
+.menu-button.primary::before {
   background: linear-gradient(
-    135deg,
-    rgba(79, 195, 247, 0.3),
-    rgba(3, 169, 244, 0.3)
+    90deg,
+    transparent,
+    rgba(160, 210, 255, 0.9),
+    transparent
   );
+  height: 1.5px;
 }
 
-.button-icon {
-  font-size: 24px;
+.menu-button.primary:hover:not(:disabled) {
+  color: rgba(220, 240, 255, 1);
 }
 
 .button-text {
-  flex: 1;
+  position: relative;
+  z-index: 1;
 }
 
 .footer-section {
   text-align: center;
-  color: #444;
-  font-size: 12px;
+  color: rgba(255, 255, 255, 0.25);
+  font-size: 11px;
+  letter-spacing: 2px;
+  font-weight: 300;
 }
 
 .version {
-  margin: 0 0 4px;
+  margin: 0 0 6px;
 }
 
 .copyright {

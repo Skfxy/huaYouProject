@@ -37,6 +37,10 @@ pnpm format
 pnpm type-check
 ```
 
+#### 2.1 开发准备
+
+开发前需要仔细阅读文件目录结构，保证正确的、在合适位置修改和添加文件
+
 ### 3.仓库结构概览
 
 ````
@@ -50,6 +54,30 @@ huayou/
 ├── AGENTS.md         # 本文件
 ├── README.md         # 给人类看的项目说明
 └── pnpm-workspace.yaml
+````
+
+#### 3.1 文档目录
+
+````
+docs/game-design/
+├── README.md                    # 设计文档索引
+├── world-setting.md             # 世界观设定
+├── characters.md                # 角色档案
+├── systems/
+│   ├── status-system.md         # 四维状态系统
+│   ├── skill-system.md          # 技能成长系统
+│   └── time-system.md           # 时间推进系统
+├── chapters/
+│   ├── chapter1.md              # 第一章：重启的2018（完整剧情）
+│   ├── chapter2-plan.md         # 第二章：面试季（规划）
+│   └── chapter3-plan.md         # 第三章：职场新人（规划）
+├── events/
+│   ├── chapter1-events.md       # 第一章随机事件池
+│   ├── common-events.md         # 通用事件
+│   └── event-rules.md           # 事件触发规则
+└── endings/
+    ├── chapter1-endings.md      # 第一章结局分支
+    └── ending-rules.md          # 结局判定逻辑
 ````
 
 #### 3.1 前端目录
@@ -169,4 +197,3 @@ packages/shared/
 ├── tsconfig.json
 └── package.json
 ````
-
