@@ -1,0 +1,131 @@
+[
+  {
+    "id": "date_saturday_morning",
+    "name": "周六早晨",
+    "description": "特殊日期 · 周末",
+    "text": "阳光透过窗帘洒在脸上，你醒了。\n\n看了一眼手机——今天是周六。\n\n宿舍里其他人都还在呼呼大睡，窗外传来操场上打篮球的声音。\n\n周末的校园总是特别悠闲，没有课，没有压力，时间仿佛慢了下来。",
+    "options": [
+      {
+        "id": "opt_sat_1",
+        "text": "睡个回笼觉",
+        "effects": { "energy": 15, "mood": 5 },
+        "timeAdvance": 1
+      },
+      {
+        "id": "opt_sat_2",
+        "text": "早起去图书馆学习",
+        "effects": { "energy": -15, "mood": -3 },
+        "skillEffects": { "programming": 10, "operation": 8 },
+        "timeAdvance": 1
+      },
+      {
+        "id": "opt_sat_3",
+        "text": "约朋友出去走走",
+        "effects": { "energy": -8, "mood": 12, "health": 3 },
+        "skillEffects": { "social": 10 },
+        "timeAdvance": 1
+      }
+    ],
+    "condition": {
+      "dayOfWeek": [6],
+      "period": ["morning"],
+      "minDay": 2
+    },
+    "priority": 80
+  },
+  {
+    "id": "date_saturday_evening",
+    "name": "周末开黑邀请",
+    "description": "特殊日期 · 周末",
+    "text": "周六晚上，小张凑了过来。\n\n小张：「周末诶！来一把？李四和王五都在线，就差你了。」\n\n电脑屏幕上的游戏界面已经打开，小张摩拳擦掌，跃跃欲试。",
+    "options": [
+      {
+        "id": "opt_sat_e1",
+        "text": "玩几局放松一下",
+        "effects": { "mood": 15, "energy": -15 },
+        "skillEffects": { "social": 5 },
+        "timeAdvance": 1
+      },
+      {
+        "id": "opt_sat_e2",
+        "text": "不了，今晚想学习",
+        "effects": { "mood": -5, "energy": -10 },
+        "skillEffects": { "programming": 12 },
+        "timeAdvance": 1
+      }
+    ],
+    "condition": {
+      "dayOfWeek": [6],
+      "period": ["evening"],
+      "minEnergy": 25,
+      "minDay": 2
+    },
+    "priority": 60
+  },
+  {
+    "id": "date_sunday_morning",
+    "name": "周日懒觉",
+    "description": "特殊日期 · 周末",
+    "text": "你自然醒过来，宿舍里静悄悄的。\n\n看了眼时间——已经快中午了。\n\n周日总是这样，不用定闹钟，不用赶时间，想睡多久睡多久。\n\n伸了个懒腰，感觉整个人都放松了不少。",
+    "options": [
+      {
+        "id": "opt_sun_1",
+        "text": "继续赖床刷手机",
+        "effects": { "energy": 10, "mood": 8 },
+        "timeAdvance": 1
+      },
+      {
+        "id": "opt_sun_2",
+        "text": "起床吃个早午饭",
+        "effects": { "energy": 8, "health": 5, "mood": 3, "money": -15 },
+        "timeAdvance": 1
+      },
+      {
+        "id": "opt_sun_3",
+        "text": "出门运动一下",
+        "effects": { "energy": -12, "health": 10, "mood": 8 },
+        "timeAdvance": 1
+      }
+    ],
+    "condition": {
+      "dayOfWeek": [0],
+      "period": ["morning"],
+      "minDay": 2
+    },
+    "priority": 80
+  },
+  {
+    "id": "date_first_weekend",
+    "name": "第一个周末",
+    "description": "特殊日期 · 穿越后第一个周末",
+    "text": "穿越回来后的第一个周末到了。\n\n你躺在床上，回想这一周发生的事情——从最初的震惊、不敢相信，到逐渐接受现实，做出选择……\n\n2018年的夏天，才刚刚开始。\n\n你有什么打算？",
+    "options": [
+      {
+        "id": "opt_fw_1",
+        "text": "利用周末好好充电学习",
+        "effects": { "energy": -10 },
+        "skillEffects": { "programming": 12, "operation": 12 },
+        "timeAdvance": 1
+      },
+      {
+        "id": "opt_fw_2",
+        "text": "好好休息，调整状态",
+        "effects": { "energy": 20, "mood": 10, "health": 5 },
+        "timeAdvance": 1
+      },
+      {
+        "id": "opt_fw_3",
+        "text": "联系老同学聚聚",
+        "effects": { "mood": 10, "energy": -8, "money": -50 },
+        "skillEffects": { "social": 12 },
+        "timeAdvance": 1
+      }
+    ],
+    "condition": {
+      "days": [2, 3],
+      "period": ["morning"],
+      "excludeFlags": ["first_weekend_done"]
+    },
+    "priority": 90
+  }
+]

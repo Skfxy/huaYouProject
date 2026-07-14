@@ -51,6 +51,9 @@ export interface TimeState {
   day: number           // 当前天数
   period: TimePeriod    // 当前时段
   totalDays: number     // 总天数
+  dayOfWeek: number     // 星期几 0-6 (周日-周六)
+  consecutiveRegularSleep: number // 连续规律作息天数
+  stayedUpLate: boolean // 是否熬夜（深夜时段仍在活动）
 }
 
 // 时间配置
@@ -72,11 +75,13 @@ export interface EventCondition {
   minMoney?: number
   maxMoney?: number
   dayOfWeek?: number[]    // 0-6，周日-周六
+  days?: number[]         // 指定天数
   minDay?: number
   maxDay?: number
   period?: TimePeriod[]
   skills?: Partial<Record<SkillType, number>>  // 技能等级要求
   flags?: string[]        // 已解锁的标志
+  excludeFlags?: string[] // 排除的标志
 }
 
 // 事件选项
@@ -88,6 +93,8 @@ export interface EventOption {
   nextEvent?: string     // 下一个事件ID
   flags?: string[]       // 解锁的标志
   condition?: EventCondition  // 选项显示条件
+  timeAdvance?: number   // 消耗时段数（默认1）
+  skipPeriods?: number   // 跳过时段数（睡觉直接到下一天）
 }
 
 // 事件
@@ -113,11 +120,15 @@ export interface SaveData {
   timestamp: number
   day: number
   period: TimePeriod
+  dayOfWeek: number
+  consecutiveRegularSleep: number
+  stayedUpLate: boolean
   status: PlayerStatus
   skills: Skill[]
   flags: string[]
   currentEvent?: string
   version: string
+  autoSave?: boolean
 }
 
 // 存档槽位

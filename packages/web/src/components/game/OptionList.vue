@@ -83,4 +83,32 @@ function selectOption(option: EventOption) {
 .option-button:hover:not(:disabled) .option-arrow {
   opacity: 1;
 }
+
+@media (max-width: 768px) {
+  .option-list {
+    gap: 10px;
+  }
+
+  .option-button {
+    padding: 14px 16px;
+    font-size: 14px;
+    border-radius: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .option-list {
+    gap: 8px;
+  }
+
+  .option-button {
+    padding: 14px 14px;
+    font-size: 14px;
+    min-height: 48px;
+  }
+
+  .option-button:active:not(:disabled) {
+    transform: scale(0.98);
+  }
+}
 </style>

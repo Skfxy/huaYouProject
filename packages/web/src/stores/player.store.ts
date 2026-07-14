@@ -8,18 +8,27 @@ import type {
   Skill,
   SkillType,
 } from "@shared/types/game.types";
-import { GAME_CONFIG, SKILL_CONFIGS } from "@shared/config/balance.config";
+import {
+  GAME_CONFIG,
+  SKILL_CONFIGS,
+  PAYDAY_CONFIG,
+  MONTHLY_SUMMARY,
+} from "@shared/config/balance.config";
 import {
   applyStatusChange,
   checkStatusCondition,
   applySkillExperience,
   canSkillUpgrade,
+  calculateSleepRecovery,
+  calculateOvertimePenalty,
+  calculateOvertimeRecovery,
 } from "@shared/utils/calculator";
 import {
   STATUS_NAMES,
   STATUS_ICONS,
   SKILL_NAMES,
 } from "@shared/constants/game.enum";
+import { useGameStore } from "./game.store";
 
 export const usePlayerStore = defineStore("player", () => {
   // ==================== 状态 ====================
@@ -107,6 +116,68 @@ export const usePlayerStore = defineStore("player", () => {
     return getSkill(skillId)?.level || 0;
   }
 
+  // ==================== 睡眠与作息 ====================
+
+  /**
+   * 执行正常睡眠（规律作息）
+   */
+  function sleep(): StatusChange {
+    const gameStore = useGameStore();
+    const recovery = calculateSleepRecovery(
+      gameStore.isWeekend,
+      gameStore.time.consecutiveRegularSleep,
+    );
+    applyChange(recovery);
+    return recovery;
+  }
+
+  /**
+   * 熬夜惩罚（深夜仍在活动）
+   */
+  function applyOvertimePenalty(): StatusChange {
+    const penalty = calculateOvertimePenalty();
+    applyChange(penalty);
+    return penalty;
+  }
+
+  /**
+   * 熬夜后补觉恢复
+   */
+  function sleepAfterOvertime(): StatusChange {
+    const recovery = calculateOvertimeRecovery();
+    applyChange(recovery);
+    return recovery;
+  }
+
+  // ==================== 特殊日期事件 ====================
+
+  /**
+   * 发薪日工资发放（边工作边学路线）
+   */
+  function applyPayday(): number | null {
+    const gameStore = useGameStore();
+    if (gameStore.hasFlag(PAYDAY_CONFIG.workRouteFlag)) {
+      const salary = PAYDAY_CONFIG.salary;
+      applyChange({ money: salary });
+      return salary;
+    }
+    return null;
+  }
+
+  /**
+   * 月末技能总结奖励
+   */
+  function applyMonthlySummary(): { exp: number; mood: number } {
+    skills.value.forEach((skill) => {
+      skill.experience += MONTHLY_SUMMARY.skillBonusExp;
+    });
+    applyChange({ mood: MONTHLY_SUMMARY.moodBonus });
+    return {
+      exp: MONTHLY_SUMMARY.skillBonusExp,
+      mood: MONTHLY_SUMMARY.moodBonus,
+    };
+  }
+
   function reset() {
     status.value = { ...GAME_CONFIG.initialStatus };
     skills.value = SKILL_CONFIGS.map((config) => ({
@@ -132,6 +203,11 @@ export const usePlayerStore = defineStore("player", () => {
     addSkillExperience,
     getSkill,
     getSkillLevel,
+    sleep,
+    applyOvertimePenalty,
+    sleepAfterOvertime,
+    applyPayday,
+    applyMonthlySummary,
     reset,
   };
 });

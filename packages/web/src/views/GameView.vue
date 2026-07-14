@@ -1,10 +1,11 @@
 <script setup lang="ts">
 // 话游 - 游戏主界面
 
-import { ref, onMounted, watch } from "vue";
+import { ref, onMounted, watch, computed } from "vue";
 import { useRouter } from "vue-router";
 import { useGameStore } from "@/stores/game.store";
 import { usePlayerStore } from "@/stores/player.store";
+import { useSaveStore } from "@/stores/save.store";
 import { useEventEngine } from "@/hooks/useEventEngine";
 import StatusBar from "@/components/game/StatusBar.vue";
 import DialogBox from "@/components/game/DialogBox.vue";
@@ -14,23 +15,65 @@ import type { EventOption } from "@shared/types/game.types";
 const router = useRouter();
 const gameStore = useGameStore();
 const playerStore = usePlayerStore();
-const { currentEvent, startGame, handleOptionSelect, selectNextEvent } =
-  useEventEngine();
+const saveStore = useSaveStore();
+const {
+  currentEvent,
+  startGame,
+  handleOptionSelect,
+  selectNextEvent,
+  specialDateHint,
+  showSpecialDateHint,
+  chapterEnded,
+  endingResult,
+  reset: resetEngine,
+} = useEventEngine();
 
 const showOptions = ref(false);
 const isTextComplete = ref(false);
 const showEffectHint = ref(false);
 const effectHint = ref("");
 
+const endingGradeColor = computed(() => {
+  if (!endingResult.value) return "#4fc3f7";
+  switch (endingResult.value.grade) {
+    case "S":
+      return "#ffd700";
+    case "A":
+      return "#4fc3f7";
+    case "B":
+      return "#66bb6a";
+    case "C":
+      return "#ffa726";
+    case "D":
+      return "#ef5350";
+    default:
+      return "#4fc3f7";
+  }
+});
+
+const endingTypeText = computed(() => {
+  if (!endingResult.value) return "";
+  switch (endingResult.value.type) {
+    case "good":
+      return "好结局";
+    case "neutral":
+      return "中结局";
+    case "bad":
+      return "坏结局";
+    default:
+      return "";
+  }
+});
+
 onMounted(() => {
-  // 如果游戏未开始，初始化
   if (!gameStore.game.isStarted) {
     gameStore.startGame();
+    playerStore.reset();
+    resetEngine();
     startGame();
   }
 });
 
-// 监听事件变化，重置选项状态
 watch(currentEvent, () => {
   showOptions.value = false;
   isTextComplete.value = false;
@@ -45,7 +88,6 @@ function selectOption(option: EventOption) {
   showOptions.value = false;
   isTextComplete.value = false;
 
-  // 显示效果提示
   const hints: string[] = [];
   if (option.effects.energy) {
     hints.push(
@@ -100,11 +142,17 @@ function goToSave() {
 }
 
 function continueGame() {
-  // 继续游戏，选择下一个随机事件
   const nextEvent = selectNextEvent();
   if (nextEvent) {
     currentEvent.value = nextEvent;
   }
+}
+
+function restartGame() {
+  gameStore.reset();
+  playerStore.reset();
+  resetEngine();
+  startGame();
 }
 </script>
 
@@ -114,6 +162,9 @@ function continueGame() {
       <button class="back-button" @click="goToHome">← 返回</button>
       <div class="header-center">
         <span class="chapter-title">第一章：重启的2018</span>
+        <span v-if="!chapterEnded" class="day-progress"
+          >第 {{ gameStore.time.day }}/{{ gameStore.time.totalDays }} 天</span
+        >
       </div>
       <button class="save-button" @click="goToSave">💾 存档</button>
     </div>
@@ -123,14 +174,98 @@ function continueGame() {
         <StatusBar />
       </div>
 
-      <!-- 效果提示 -->
+      <div v-if="!chapterEnded" class="date-info">
+        <span class="day-of-week">{{ gameStore.dayOfWeekName }}</span>
+        <span v-if="gameStore.isWeekend" class="weekend-tag">周末</span>
+        <span class="period-badge">{{ gameStore.periodName }}</span>
+      </div>
+
       <Transition name="fade">
         <div v-if="showEffectHint" class="effect-hint">
           {{ effectHint }}
         </div>
       </Transition>
 
-      <div v-if="currentEvent" class="dialog-section">
+      <Transition name="fade">
+        <div v-if="showSpecialDateHint" class="special-hint">
+          {{ specialDateHint }}
+        </div>
+      </Transition>
+
+      <Transition name="fade">
+        <div v-if="saveStore.showAutoSaveHint" class="autosave-hint">
+          💾 已自动存档
+        </div>
+      </Transition>
+
+      <!-- 结局界面 -->
+      <div v-if="chapterEnded && endingResult" class="ending-section">
+        <div class="ending-content">
+          <div
+            class="ending-grade-badge"
+            :style="{ borderColor: endingGradeColor, color: endingGradeColor }"
+          >
+            {{ endingResult.grade }}
+          </div>
+          <h2 class="ending-title">{{ endingResult.name }}</h2>
+          <p class="ending-type">{{ endingTypeText }}</p>
+          <div class="ending-divider"></div>
+          <p class="ending-description">{{ endingResult.description }}</p>
+
+          <div class="ending-stats">
+            <div class="stat-row">
+              <span class="stat-label">精力</span>
+              <span class="stat-value">{{ playerStore.status.energy }}</span>
+            </div>
+            <div class="stat-row">
+              <span class="stat-label">心情</span>
+              <span class="stat-value">{{ playerStore.status.mood }}</span>
+            </div>
+            <div class="stat-row">
+              <span class="stat-label">健康</span>
+              <span class="stat-value">{{ playerStore.status.health }}</span>
+            </div>
+            <div class="stat-row">
+              <span class="stat-label">存款</span>
+              <span class="stat-value">¥{{ playerStore.status.money }}</span>
+            </div>
+            <div class="stat-row">
+              <span class="stat-label">编程等级</span>
+              <span class="stat-value"
+                >Lv.{{ playerStore.getSkillLevel("programming") }}</span
+              >
+            </div>
+            <div class="stat-row">
+              <span class="stat-label">运营等级</span>
+              <span class="stat-value"
+                >Lv.{{ playerStore.getSkillLevel("operation") }}</span
+              >
+            </div>
+            <div class="stat-row">
+              <span class="stat-label">社交能力</span>
+              <span class="stat-value"
+                >Lv.{{ playerStore.getSkillLevel("social") }}</span
+              >
+            </div>
+          </div>
+
+          <div class="ending-score">
+            <span>结局评分</span>
+            <span class="score-value"
+              >{{ Math.round(endingResult.score * 100) }}分</span
+            >
+          </div>
+
+          <div class="ending-actions">
+            <button class="menu-button primary" @click="restartGame">
+              重新开始
+            </button>
+            <button class="menu-button" @click="goToHome">返回主菜单</button>
+          </div>
+        </div>
+      </div>
+
+      <div v-else-if="currentEvent" class="dialog-section">
         <div class="event-title">
           <h2>{{ currentEvent.name }}</h2>
           <p class="event-description">{{ currentEvent.description }}</p>
@@ -174,7 +309,10 @@ function continueGame() {
         </div>
       </div>
 
-      <div v-if="showOptions && currentEvent" class="options-section">
+      <div
+        v-if="showOptions && currentEvent && !chapterEnded"
+        class="options-section"
+      >
         <OptionList :options="currentEvent.options" @select="selectOption" />
       </div>
     </div>
@@ -184,6 +322,7 @@ function continueGame() {
 <style scoped>
 .game-view {
   min-height: 100vh;
+  min-height: 100svh;
   display: flex;
   flex-direction: column;
   background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3a 50%, #0a0a2a 100%);
@@ -200,12 +339,20 @@ function continueGame() {
 .header-center {
   flex: 1;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .chapter-title {
   font-size: 14px;
   color: #4fc3f7;
   opacity: 0.8;
+}
+
+.day-progress {
+  font-size: 12px;
+  color: #888;
 }
 
 .back-button,
@@ -240,6 +387,34 @@ function continueGame() {
   width: 100%;
 }
 
+.date-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+}
+
+.day-of-week {
+  font-size: 14px;
+  color: #aaa;
+}
+
+.weekend-tag {
+  background: rgba(255, 193, 7, 0.2);
+  color: #ffc107;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.period-badge {
+  background: rgba(79, 195, 247, 0.2);
+  color: #4fc3f7;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
 .effect-hint {
   position: fixed;
   top: 80px;
@@ -253,6 +428,47 @@ function continueGame() {
   font-weight: bold;
   z-index: 100;
   animation: slideDown 0.3s ease;
+}
+
+.special-hint {
+  position: fixed;
+  top: 120px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(156, 39, 176, 0.9);
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: bold;
+  z-index: 100;
+  animation: slideDown 0.3s ease;
+  max-width: 90%;
+  text-align: center;
+}
+
+.autosave-hint {
+  position: fixed;
+  top: 160px;
+  right: 24px;
+  background: rgba(76, 175, 80, 0.9);
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  z-index: 100;
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 @keyframes slideDown {
@@ -297,6 +513,109 @@ function continueGame() {
   font-size: 14px;
   color: #666;
   margin: 0;
+}
+
+.ending-section {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 0;
+}
+
+.ending-content {
+  text-align: center;
+  max-width: 450px;
+  width: 100%;
+}
+
+.ending-grade-badge {
+  width: 80px;
+  height: 80px;
+  border: 3px solid;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  font-weight: bold;
+  margin: 0 auto 20px;
+}
+
+.ending-title {
+  font-size: 32px;
+  color: #4fc3f7;
+  margin: 0 0 8px;
+}
+
+.ending-type {
+  font-size: 14px;
+  color: #888;
+  margin: 0 0 20px;
+}
+
+.ending-divider {
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #4fc3f7, transparent);
+  margin: 0 auto 24px;
+}
+
+.ending-description {
+  font-size: 15px;
+  color: #ccc;
+  line-height: 1.8;
+  margin: 0 0 24px;
+  font-style: italic;
+}
+
+.ending-stats {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.stat-row:last-child {
+  border-bottom: none;
+}
+
+.stat-row .stat-label {
+  color: #888;
+  font-size: 14px;
+}
+
+.stat-row .stat-value {
+  color: #4fc3f7;
+  font-weight: bold;
+}
+
+.ending-score {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: rgba(79, 195, 247, 0.1);
+  border-radius: 8px;
+  margin-bottom: 24px;
+}
+
+.ending-score span:first-child {
+  color: #aaa;
+}
+
+.score-value {
+  color: #4fc3f7;
+  font-size: 20px;
+  font-weight: bold;
 }
 
 .end-section {
@@ -349,17 +668,18 @@ function continueGame() {
   gap: 4px;
 }
 
-.stat-label {
+.stat-item .stat-label {
   font-size: 12px;
   color: #666;
 }
 
-.stat-value {
+.stat-item .stat-value {
   font-size: 18px;
   color: #4fc3f7;
   font-weight: bold;
 }
 
+.ending-actions,
 .end-actions {
   display: flex;
   flex-direction: column;
@@ -393,5 +713,202 @@ function continueGame() {
 
 .options-section {
   margin-top: auto;
+}
+
+@media (max-width: 768px) {
+  .game-header {
+    padding: 12px 16px;
+  }
+
+  .back-button,
+  .save-button {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+
+  .chapter-title {
+    font-size: 13px;
+  }
+
+  .day-progress {
+    font-size: 11px;
+  }
+
+  .game-content {
+    padding: 16px;
+    gap: 16px;
+  }
+
+  .event-title h2 {
+    font-size: 20px;
+  }
+
+  .event-description {
+    font-size: 13px;
+  }
+
+  .effect-hint {
+    top: 64px;
+    font-size: 13px;
+    padding: 6px 12px;
+  }
+
+  .special-hint {
+    top: 100px;
+    font-size: 13px;
+    padding: 8px 16px;
+  }
+
+  .autosave-hint {
+    top: 136px;
+    right: 16px;
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+
+  .ending-grade-badge {
+    width: 64px;
+    height: 64px;
+    font-size: 28px;
+    margin-bottom: 16px;
+  }
+
+  .ending-title {
+    font-size: 26px;
+  }
+
+  .ending-description {
+    font-size: 14px;
+  }
+
+  .ending-stats {
+    padding: 12px;
+  }
+
+  .stat-row {
+    padding: 6px 0;
+    font-size: 13px;
+  }
+
+  .end-content h2 {
+    font-size: 26px;
+  }
+
+  .end-stats {
+    gap: 20px;
+  }
+
+  .stat-item .stat-value {
+    font-size: 16px;
+  }
+
+  .menu-button {
+    padding: 10px 20px;
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .game-header {
+    padding: 10px 12px;
+  }
+
+  .back-button,
+  .save-button {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+
+  .chapter-title {
+    font-size: 12px;
+  }
+
+  .game-content {
+    padding: 12px;
+    gap: 12px;
+  }
+
+  .date-info {
+    gap: 6px;
+  }
+
+  .day-of-week {
+    font-size: 12px;
+  }
+
+  .weekend-tag,
+  .period-badge {
+    font-size: 11px;
+    padding: 1px 6px;
+  }
+
+  .event-title h2 {
+    font-size: 18px;
+  }
+
+  .ending-grade-badge {
+    width: 56px;
+    height: 56px;
+    font-size: 24px;
+    border-width: 2px;
+  }
+
+  .ending-title {
+    font-size: 22px;
+  }
+
+  .ending-type {
+    font-size: 13px;
+    margin-bottom: 16px;
+  }
+
+  .ending-description {
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+  .ending-score {
+    padding: 10px 12px;
+  }
+
+  .score-value {
+    font-size: 18px;
+  }
+
+  .end-content h2 {
+    font-size: 22px;
+  }
+
+  .end-text {
+    font-size: 16px;
+  }
+
+  .end-subtext {
+    font-size: 13px;
+    margin-bottom: 24px;
+  }
+
+  .end-stats {
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .stat-item .stat-label {
+    font-size: 11px;
+  }
+
+  .stat-item .stat-value {
+    font-size: 15px;
+  }
+
+  .ending-actions,
+  .end-actions {
+    gap: 10px;
+  }
+
+  .menu-button {
+    padding: 10px 16px;
+    font-size: 14px;
+  }
 }
 </style>

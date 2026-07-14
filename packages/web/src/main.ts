@@ -9,4 +9,16 @@ const pinia = createPinia();
 
 app.use(pinia);
 app.use(router);
-app.mount("#app");
+
+router.isReady().then(() => {
+  app.mount("#app");
+  requestAnimationFrame(() => {
+    const loadingEl = document.getElementById("app-loading");
+    if (loadingEl) {
+      loadingEl.classList.add("fade-out");
+      setTimeout(() => {
+        loadingEl.remove();
+      }, 500);
+    }
+  });
+});

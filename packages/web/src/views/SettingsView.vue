@@ -106,6 +106,7 @@ function goBack() {
 <style scoped>
 .settings-view {
   min-height: 100vh;
+  min-height: 100svh;
   display: flex;
   flex-direction: column;
   background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3a 50%, #0a0a2a 100%);
@@ -236,5 +237,82 @@ function goBack() {
 
 .about-info strong {
   color: #4fc3f7;
+}
+
+@media (max-width: 768px) {
+  .settings-header {
+    padding: 12px 16px;
+    gap: 12px;
+  }
+
+  .back-button {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+
+  .settings-header h1 {
+    font-size: 20px;
+  }
+
+  .settings-content {
+    padding: 16px;
+    gap: 16px;
+  }
+
+  .settings-section {
+    padding: 16px;
+  }
+
+  .settings-section h2 {
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
+
+  .setting-item {
+    padding: 10px 0;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .setting-slider {
+    width: 180px;
+  }
+
+  .reset-button {
+    padding: 10px 16px;
+    min-height: 40px;
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .settings-header {
+    padding: 10px 12px;
+  }
+
+  .settings-header h1 {
+    font-size: 18px;
+  }
+
+  .settings-content {
+    padding: 12px;
+    gap: 12px;
+  }
+
+  .settings-section {
+    padding: 14px;
+    border-radius: 10px;
+  }
+
+  .setting-control {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .setting-slider {
+    flex: 1;
+    max-width: 200px;
+  }
 }
 </style>

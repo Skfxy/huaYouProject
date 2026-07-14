@@ -1,0 +1,154 @@
+[
+  {
+    "id": "daily_morning",
+    "name": "新的一天",
+    "description": "日常 · 上午",
+    "text": "阳光照进宿舍，新的一天开始了。\n\n看了看手机，距离毕业离校还有一段时间。\n\n你决定怎么度过这个上午？",
+    "options": [
+      {
+        "id": "dm_1",
+        "text": "去图书馆学习编程",
+        "effects": { "energy": -15, "mood": 2 },
+        "skillEffects": { "programming": 12 },
+        "timeAdvance": 1
+      },
+      {
+        "id": "dm_2",
+        "text": "研究互联网运营知识",
+        "effects": { "energy": -12, "mood": 2 },
+        "skillEffects": { "operation": 12 },
+        "timeAdvance": 1
+      },
+      {
+        "id": "dm_3",
+        "text": "去食堂吃个丰盛的早餐",
+        "effects": { "energy": 15, "health": 5, "mood": 5, "money": -10 },
+        "timeAdvance": 1
+      },
+      {
+        "id": "dm_4",
+        "text": "在校园里随便逛逛，和人聊聊天",
+        "effects": { "energy": -5, "mood": 8 },
+        "skillEffects": { "social": 8 },
+        "timeAdvance": 1
+      }
+    ],
+    "condition": {
+      "period": ["morning"],
+      "minDay": 2
+    },
+    "priority": 10
+  },
+  {
+    "id": "daily_afternoon",
+    "name": "午后时光",
+    "description": "日常 · 下午",
+    "text": "下午的阳光有些慵懒，宿舍里很安静。\n\n你伸了个懒腰，考虑接下来做点什么。",
+    "options": [
+      {
+        "id": "da_1",
+        "text": "继续钻研技术，写点代码",
+        "effects": { "energy": -18, "mood": -2 },
+        "skillEffects": { "programming": 15 },
+        "timeAdvance": 1
+      },
+      {
+        "id": "da_2",
+        "text": "做个运营方案练手",
+        "effects": { "energy": -15, "mood": -2 },
+        "skillEffects": { "operation": 15 },
+        "timeAdvance": 1
+      },
+      {
+        "id": "da_3",
+        "text": "打个零工赚点钱",
+        "effects": { "energy": -20, "mood": -5, "money": 150 },
+        "timeAdvance": 1
+      },
+      {
+        "id": "da_4",
+        "text": "吃点东西，午休一会儿",
+        "effects": { "energy": 25, "health": 3, "mood": 5, "money": -15 },
+        "timeAdvance": 1
+      }
+    ],
+    "condition": {
+      "period": ["afternoon"],
+      "minDay": 2
+    },
+    "priority": 10
+  },
+  {
+    "id": "daily_evening",
+    "name": "傍晚时分",
+    "description": "日常 · 傍晚",
+    "text": "天色渐渐暗了下来，食堂飘来饭菜的香味。\n\n该考虑怎么度过这个晚上了。",
+    "options": [
+      {
+        "id": "de_1",
+        "text": "晚上继续学习，趁热打铁",
+        "effects": { "energy": -15, "mood": -3 },
+        "skillEffects": { "programming": 10, "operation": 8 },
+        "timeAdvance": 1
+      },
+      {
+        "id": "de_2",
+        "text": "和同学出去吃顿好的",
+        "effects": { "energy": 8, "mood": 12, "health": 3, "money": -50 },
+        "skillEffects": { "social": 10 },
+        "timeAdvance": 1
+      },
+      {
+        "id": "de_3",
+        "text": "去操场跑跑步，锻炼身体",
+        "effects": { "energy": -10, "health": 8, "mood": 5 },
+        "timeAdvance": 1
+      },
+      {
+        "id": "de_4",
+        "text": "吃个晚饭，早点洗漱休息",
+        "effects": { "energy": 10, "mood": 5, "health": 2, "money": -15 },
+        "flags": ["action_sleep"],
+        "skipPeriods": 2
+      }
+    ],
+    "condition": {
+      "period": ["evening"],
+      "minDay": 2
+    },
+    "priority": 10
+  },
+  {
+    "id": "daily_night",
+    "name": "深夜",
+    "description": "日常 · 深夜",
+    "text": "夜深了，宿舍楼里渐渐安静下来。\n\n室友们都已经上床，只有你还亮着光。",
+    "options": [
+      {
+        "id": "dn_1",
+        "text": "趁着安静再学会儿",
+        "effects": { "energy": -12, "mood": -5 },
+        "skillEffects": { "programming": 12 },
+        "timeAdvance": 1
+      },
+      {
+        "id": "dn_2",
+        "text": "刷会儿手机放松一下",
+        "effects": { "energy": -5, "mood": 5 },
+        "timeAdvance": 1
+      },
+      {
+        "id": "dn_3",
+        "text": "立刻睡觉，不熬夜",
+        "effects": {},
+        "flags": ["action_sleep"],
+        "skipPeriods": 1
+      }
+    ],
+    "condition": {
+      "period": ["night"],
+      "minDay": 2
+    },
+    "priority": 5
+  }
+]
