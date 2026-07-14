@@ -4,20 +4,20 @@
 
 ## 目录
 
-- [1. 项目概述](#1-项目概述)
-- [2. 技术架构](#2-技术架构)
-- [3. 项目结构](#3-项目结构)
-- [4. 前端模块详解](#4-前端模块详解)
-- [5. 共享层模块详解](#5-共享层模块详解)
-- [6. 游戏核心系统](#6-游戏核心系统)
-- [7. 事件系统](#7-事件系统)
-- [8. 存档系统](#8-存档系统)
-- [9. 依赖关系图](#9-依赖关系图)
-- [10. 项目运行与构建](#10-项目运行与构建)
-- [11. 开发规范与约定](#11-开发规范与约定)
-- [12. 第二阶段规划](#12-第二阶段规划)
+- [1. 项目概述](#1-%E9%A1%B9%E7%9B%AE%E6%A6%82%E8%BF%B0)
+- [2. 技术架构](#2-%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84)
+- [3. 项目结构](#3-%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84)
+- [4. 前端模块详解](#4-%E5%89%8D%E7%AB%AF%E6%A8%A1%E5%9D%97%E8%AF%A6%E8%A7%A3)
+- [5. 共享层模块详解](#5-%E5%85%B1%E4%BA%AB%E5%B1%82%E6%A8%A1%E5%9D%97%E8%AF%A6%E8%A7%A3)
+- [6. 游戏核心系统](#6-%E6%B8%B8%E6%88%8F%E6%A0%B8%E5%BF%83%E7%B3%BB%E7%BB%9F)
+- [7. 事件系统](#7-%E4%BA%8B%E4%BB%B6%E7%B3%BB%E7%BB%9F)
+- [8. 存档系统](#8-%E5%AD%98%E6%A1%A3%E7%B3%BB%E7%BB%9F)
+- [9. 依赖关系图](#9-%E4%BE%9D%E8%B5%96%E5%85%B3%E7%B3%BB%E5%9B%BE)
+- [10. 项目运行与构建](#10-%E9%A1%B9%E7%9B%AE%E8%BF%90%E8%A1%8C%E4%B8%8E%E6%9E%84%E5%BB%BA)
+- [11. 开发规范与约定](#11-%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83%E4%B8%8E%E7%BA%A6%E5%AE%9A)
+- [12. 第二阶段规划](#12-%E7%AC%AC%E4%BA%8C%E9%98%B6%E6%AE%B5%E8%A7%84%E5%88%92)
 
----
+***
 
 ## 1. 项目概述
 
@@ -39,27 +39,27 @@
 - **存档方式**：localStorage 本地存档
 - **后端状态**：预留目录占位，第二阶段正式开发
 
----
+***
 
 ## 2. 技术架构
 
 ### 2.1 技术栈
 
-| 层级 | 技术选型 | 版本 | 说明 |
-|------|----------|------|------|
-| 前端框架 | Vue 3 | ^3.4.21 | Composition API + `<script setup>` |
-| 状态管理 | Pinia | ^2.1.7 | 基于 Vue 3 的状态管理库 |
-| 路由 | Vue Router | ^4.3.0 | 前端路由管理 |
-| 构建工具 | Vite | ^5.2.8 | 下一代前端构建工具 |
-| 语言 | TypeScript | ^5.4.3 | 类型安全的 JavaScript |
-| 后端框架 | NestJS | - | 第二阶段启用 |
-| 数据库 | MongoDB | - | 第二阶段启用 |
-| 包管理 | pnpm | - | workspace monorepo 管理 |
-| 代码规范 | ESLint + Prettier | - | 代码质量与格式化 |
+| 层级     | 技术选型          | 版本    | 说明                               |
+| -------- | ----------------- | ------- | ---------------------------------- |
+| 前端框架 | Vue 3             | ^3.4.21 | Composition API + `<script setup>` |
+| 状态管理 | Pinia             | ^2.1.7  | 基于 Vue 3 的状态管理库            |
+| 路由     | Vue Router        | ^4.3.0  | 前端路由管理                       |
+| 构建工具 | Vite              | ^5.2.8  | 下一代前端构建工具                 |
+| 语言     | TypeScript        | ^5.4.3  | 类型安全的 JavaScript              |
+| 后端框架 | NestJS            | -       | 第二阶段启用                       |
+| 数据库   | MongoDB           | -       | 第二阶段启用                       |
+| 包管理   | pnpm              | -       | workspace monorepo 管理            |
+| 代码规范 | ESLint + Prettier | -       | 代码质量与格式化                   |
 
 ### 2.2 架构设计
 
-```
+````
 ┌─────────────────────────────────────────────────────────┐
 │                     前端应用 (web)                       │
 │  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌─────────┐ │
@@ -83,7 +83,7 @@
                      │  后端 (server)  │
                      │  第二阶段启用    │
                      └───────────────┘
-```
+````
 
 ### 2.3 设计原则
 
@@ -93,13 +93,13 @@
 4. **组合式函数**：游戏核心逻辑封装为 Vue Composition API Hooks
 5. **渐进式开发**：第一阶段纯前端，第二阶段接入后端
 
----
+***
 
 ## 3. 项目结构
 
 ### 3.1 Monorepo 结构
 
-```
+````
 huayou/
 ├── packages/
 │   ├── web/              # 前端游戏主程序 ✅ 当前阶段核心
@@ -117,11 +117,11 @@ huayou/
 ├── README.md             # 项目说明
 ├── package.json          # 根 package.json
 └── pnpm-workspace.yaml   # pnpm workspace 配置
-```
+````
 
 ### 3.2 前端目录结构
 
-```
+````
 packages/web/
 ├── public/                    # 静态资源（不参与构建）
 │   ├── favicon.ico
@@ -164,11 +164,11 @@ packages/web/
 ├── tsconfig.json              # TypeScript 配置
 ├── .eslintrc.cjs              # ESLint 配置
 └── package.json
-```
+````
 
 ### 3.3 共享层目录结构
 
-```
+````
 packages/shared/
 ├── src/
 │   ├── types/                 # 类型定义
@@ -182,9 +182,9 @@ packages/shared/
 │   └── index.ts               # 统一导出
 ├── tsconfig.json
 └── package.json
-```
+````
 
----
+***
 
 ## 4. 前端模块详解
 
@@ -193,6 +193,7 @@ packages/shared/
 **文件**：[main.ts](file:///d:/huaYouProject/packages/web/src/main.ts)
 
 应用入口文件，负责：
+
 - 创建 Vue 应用实例
 - 注册 Pinia 状态管理
 - 注册 Vue Router 路由
@@ -219,13 +220,13 @@ app.mount("#app");
 
 #### 路由配置
 
-| 路径 | 名称 | 组件 | 页面标题 |
-|------|------|------|----------|
-| `/` | home | HomeView | 话游 - 主菜单 |
-| `/game` | game | GameView | 话游 - 游戏中 |
-| `/save` | save | SaveView | 话游 - 存档管理 |
-| `/settings` | settings | SettingsView | 话游 - 设置 |
-| `/:pathMatch(.*)*` | - | 重定向到 `/` | - |
+| 路径               | 名称     | 组件         | 页面标题        |
+| ------------------ | -------- | ------------ | --------------- |
+| `/`                | home     | HomeView     | 话游 - 主菜单   |
+| `/game`            | game     | GameView     | 话游 - 游戏中   |
+| `/save`            | save     | SaveView     | 话游 - 存档管理 |
+| `/settings`        | settings | SettingsView | 话游 - 设置     |
+| `/:pathMatch(.*)*` | -        | 重定向到 `/` | -               |
 
 #### 路由守卫
 
@@ -243,29 +244,29 @@ app.mount("#app");
 
 ##### 状态 (State)
 
-| 状态 | 类型 | 说明 |
-|------|------|------|
+| 状态     | 类型           | 说明                                |
+| -------- | -------------- | ----------------------------------- |
 | `status` | `PlayerStatus` | 玩家四维状态（精力/心情/健康/存款） |
-| `skills` | `Skill[]` | 技能列表 |
+| `skills` | `Skill[]`      | 技能列表                            |
 
 ##### 计算属性 (Getters)
 
-| 计算属性 | 返回类型 | 说明 |
-|----------|----------|------|
-| `statusWithNames` | `Array` | 带名称和图标的状态列表 |
-| `skillWithDetails` | `Array` | 带详情的技能列表 |
+| 计算属性            | 返回类型 | 说明                           |
+| ------------------- | -------- | ------------------------------ |
+| `statusWithNames`   | `Array`  | 带名称和图标的状态列表         |
+| `skillWithDetails`  | `Array`  | 带详情的技能列表               |
 | `overallEfficiency` | `number` | 综合效率系数（精力×心情×健康） |
 
 ##### 操作 (Actions)
 
-| 方法 | 参数 | 返回值 | 说明 |
-|------|------|--------|------|
-| `applyChange` | `change: StatusChange` | `void` | 应用状态变化 |
-| `checkCondition` | `condition` | `boolean` | 检查状态是否满足条件 |
-| `addSkillExperience` | `skillId: SkillType, experience: number` | `void` | 添加技能经验 |
-| `getSkill` | `skillId: SkillType` | `Skill \| undefined` | 获取技能信息 |
-| `getSkillLevel` | `skillId: SkillType` | `number` | 获取技能等级 |
-| `reset` | - | `void` | 重置玩家状态 |
+| 方法                 | 参数                                     | 返回值              | 说明                 |
+| -------------------- | ---------------------------------------- | ------------------- | -------------------- |
+| `applyChange`        | `change: StatusChange`                   | `void`              | 应用状态变化         |
+| `checkCondition`     | `condition`                              | `boolean`           | 检查状态是否满足条件 |
+| `addSkillExperience` | `skillId: SkillType, experience: number` | `void`              | 添加技能经验         |
+| `getSkill`           | `skillId: SkillType`                     | `Skill \| undefined` | 获取技能信息         |
+| `getSkillLevel`      | `skillId: SkillType`                     | `number`            | 获取技能等级         |
+| `reset`              | -                                        | `void`              | 重置玩家状态         |
 
 ##### 效率计算逻辑
 
@@ -283,52 +284,52 @@ app.mount("#app");
 
 ##### 状态 (State)
 
-| 状态 | 类型 | 说明 |
-|------|------|------|
-| `time` | `TimeState` | 时间状态（天数、时段、总天数） |
-| `game` | `GameState` | 游戏状态（开始/暂停/章节/历史） |
-| `flags` | `string[]` | 剧情标志数组 |
+| 状态    | 类型        | 说明                            |
+| ------- | ----------- | ------------------------------- |
+| `time`  | `TimeState` | 时间状态（天数、时段、总天数）  |
+| `game`  | `GameState` | 游戏状态（开始/暂停/章节/历史） |
+| `flags` | `string[]`  | 剧情标志数组                    |
 
 ##### 计算属性 (Getters)
 
-| 计算属性 | 返回类型 | 说明 |
-|----------|----------|------|
-| `periodName` | `string` | 当前时段中文名 |
-| `periodIndex` | `number` | 当前时段索引 |
-| `dayProgress` | `number` | 天数进度百分比 |
+| 计算属性       | 返回类型  | 说明               |
+| -------------- | --------- | ------------------ |
+| `periodName`   | `string`  | 当前时段中文名     |
+| `periodIndex`  | `number`  | 当前时段索引       |
+| `dayProgress`  | `number`  | 天数进度百分比     |
 | `isLastPeriod` | `boolean` | 是否是当天最后时段 |
-| `isLastDay` | `boolean` | 是否是最后一天 |
+| `isLastDay`    | `boolean` | 是否是最后一天     |
 
 ##### 操作 (Actions)
 
 **时间操作：**
 
-| 方法 | 参数 | 返回值 | 说明 |
-|------|------|--------|------|
-| `advancePeriod` | - | `void` | 推进一个时段 |
-| `advanceTime` | `periods: number` | `void` | 推进指定数量时段 |
-| `advanceDays` | `days: number` | `void` | 推进指定天数 |
-| `setPeriod` | `period: TimePeriod` | `void` | 设置当前时段 |
-| `setDay` | `day: number` | `void` | 设置当前天数 |
+| 方法            | 参数                 | 返回值 | 说明             |
+| --------------- | -------------------- | ------ | ---------------- |
+| `advancePeriod` | -                    | `void` | 推进一个时段     |
+| `advanceTime`   | `periods: number`    | `void` | 推进指定数量时段 |
+| `advanceDays`   | `days: number`       | `void` | 推进指定天数     |
+| `setPeriod`     | `period: TimePeriod` | `void` | 设置当前时段     |
+| `setDay`        | `day: number`        | `void` | 设置当前天数     |
 
 **游戏操作：**
 
-| 方法 | 参数 | 返回值 | 说明 |
-|------|------|--------|------|
-| `startGame` | - | `void` | 开始游戏 |
-| `pauseGame` | - | `void` | 暂停游戏 |
-| `resumeGame` | - | `void` | 继续游戏 |
-| `endGame` | - | `void` | 结束游戏 |
+| 方法         | 参数 | 返回值 | 说明     |
+| ------------ | ---- | ------ | -------- |
+| `startGame`  | -    | `void` | 开始游戏 |
+| `pauseGame`  | -    | `void` | 暂停游戏 |
+| `resumeGame` | -    | `void` | 继续游戏 |
+| `endGame`    | -    | `void` | 结束游戏 |
 
 **历史与标志：**
 
-| 方法 | 参数 | 返回值 | 说明 |
-|------|------|--------|------|
-| `addHistory` | `eventId: string` | `void` | 添加事件历史 |
+| 方法         | 参数              | 返回值    | 说明         |
+| ------------ | ----------------- | --------- | ------------ |
+| `addHistory` | `eventId: string` | `void`    | 添加事件历史 |
 | `hasHistory` | `eventId: string` | `boolean` | 检查事件历史 |
-| `addFlag` | `flag: string` | `void` | 添加剧情标志 |
-| `removeFlag` | `flag: string` | `void` | 移除剧情标志 |
-| `hasFlag` | `flag: string` | `boolean` | 检查剧情标志 |
+| `addFlag`    | `flag: string`    | `void`    | 添加剧情标志 |
+| `removeFlag` | `flag: string`    | `void`    | 移除剧情标志 |
+| `hasFlag`    | `flag: string`    | `boolean` | 检查剧情标志 |
 
 #### 4.3.3 存档管理 Store
 
@@ -338,30 +339,30 @@ app.mount("#app");
 
 ##### 状态 (State)
 
-| 状态 | 类型 | 说明 |
-|------|------|------|
-| `slots` | `SaveSlot[]` | 存档槽位列表 |
+| 状态          | 类型            | 说明            |
+| ------------- | --------------- | --------------- |
+| `slots`       | `SaveSlot[]`    | 存档槽位列表    |
 | `currentSlot` | `number \| null` | 当前存档槽位 ID |
 
 ##### 计算属性 (Getters)
 
-| 计算属性 | 返回类型 | 说明 |
-|----------|----------|------|
-| `isEmpty` | `boolean` | 是否所有槽位都为空 |
-| `filledSlots` | `SaveSlot[]` | 已填充的槽位 |
-| `emptySlots` | `SaveSlot[]` | 空槽位 |
+| 计算属性      | 返回类型     | 说明               |
+| ------------- | ------------ | ------------------ |
+| `isEmpty`     | `boolean`    | 是否所有槽位都为空 |
+| `filledSlots` | `SaveSlot[]` | 已填充的槽位       |
+| `emptySlots`  | `SaveSlot[]` | 空槽位             |
 
 ##### 操作 (Actions)
 
-| 方法 | 参数 | 返回值 | 说明 |
-|------|------|--------|------|
-| `initSlots` | - | `void` | 初始化存档槽位（从 localStorage 读取） |
-| `saveToSlot` | `slotId: number, name?: string` | `boolean` | 保存到指定槽位 |
-| `loadFromSlot` | `slotId: number` | `boolean` | 从指定槽位加载 |
-| `deleteSlot` | `slotId: number` | `boolean` | 删除指定槽位 |
-| `getSlotInfo` | `slotId: number` | `SaveSlot \| undefined` | 获取槽位信息 |
-| `formatTimestamp` | `timestamp: number` | `string` | 格式化时间戳 |
-| `reset` | - | `void` | 重置所有存档 |
+| 方法              | 参数                            | 返回值                 | 说明                                   |
+| ----------------- | ------------------------------- | ---------------------- | -------------------------------------- |
+| `initSlots`       | -                               | `void`                 | 初始化存档槽位（从 localStorage 读取） |
+| `saveToSlot`      | `slotId: number, name?: string` | `boolean`              | 保存到指定槽位                         |
+| `loadFromSlot`    | `slotId: number`                | `boolean`              | 从指定槽位加载                         |
+| `deleteSlot`      | `slotId: number`                | `boolean`              | 删除指定槽位                           |
+| `getSlotInfo`     | `slotId: number`                | `SaveSlot \| undefined` | 获取槽位信息                           |
+| `formatTimestamp` | `timestamp: number`             | `string`               | 格式化时间戳                           |
+| `reset`           | -                               | `void`                 | 重置所有存档                           |
 
 ##### 存档数据结构
 
@@ -377,21 +378,22 @@ app.mount("#app");
 
 ##### 响应式状态
 
-| 状态 | 类型 | 说明 |
-|------|------|------|
-| `allEvents` | `Ref<GameEvent[]>` | 所有事件列表 |
-| `currentEvent` | `Ref<GameEvent \| null>` | 当前事件 |
-| `eventHistory` | `Ref<string[]>` | 事件触发历史 |
+| 状态           | 类型                    | 说明         |
+| -------------- | ----------------------- | ------------ |
+| `allEvents`    | `Ref<GameEvent[]>`      | 所有事件列表 |
+| `currentEvent` | `Ref<GameEvent \| null>` | 当前事件     |
+| `eventHistory` | `Ref<string[]>`         | 事件触发历史 |
 
 ##### 核心方法
 
 **条件检查：**
 
-| 方法 | 参数 | 返回值 | 说明 |
-|------|------|--------|------|
+| 方法                  | 参数                         | 返回值    | 说明             |
+| --------------------- | ---------------------------- | --------- | ---------------- |
 | `checkEventCondition` | `condition?: EventCondition` | `boolean` | 检查事件触发条件 |
 
 检查项包括：
+
 - 状态条件（精力/心情/健康/存款的最小/最大值）
 - 时间条件（时段、天数范围）
 - 技能条件（技能等级要求）
@@ -399,35 +401,38 @@ app.mount("#app");
 
 **事件获取：**
 
-| 方法 | 参数 | 返回值 | 说明 |
-|------|------|--------|------|
-| `getAvailableEvents` | - | `GameEvent[]` | 获取所有可用事件 |
-| `getMainEvents` | - | `GameEvent[]` | 获取可用主线事件 |
-| `getRandomEvents` | - | `GameEvent[]` | 获取可用随机事件 |
-| `selectNextEvent` | - | `GameEvent \| null` | 选择下一个事件 |
+| 方法                 | 参数 | 返回值             | 说明             |
+| -------------------- | ---- | ------------------ | ---------------- |
+| `getAvailableEvents` | -    | `GameEvent[]`      | 获取所有可用事件 |
+| `getMainEvents`      | -    | `GameEvent[]`      | 获取可用主线事件 |
+| `getRandomEvents`    | -    | `GameEvent[]`      | 获取可用随机事件 |
+| `selectNextEvent`    | -    | `GameEvent \| null` | 选择下一个事件   |
 
 **事件选择逻辑：**
+
 1. 优先选择主线事件（按顺序第一个）
 2. 如无主线事件，从随机事件中按优先级加权随机选择
 3. 优先级权重：`event.priority || 30`
 
 **事件处理：**
 
-| 方法 | 参数 | 返回值 | 说明 |
-|------|------|--------|------|
-| `triggerEvent` | `eventId: string` | `GameEvent \| null` | 触发指定事件 |
-| `applyOptionEffects` | `option: EventOption` | `void` | 应用选项效果 |
-| `handleOptionSelect` | `option: EventOption` | `void` | 处理选项选择 |
-| `startGame` | - | `void` | 开始游戏（触发第一个事件） |
-| `reset` | - | `void` | 重置事件引擎 |
+| 方法                 | 参数                  | 返回值             | 说明                       |
+| -------------------- | --------------------- | ------------------ | -------------------------- |
+| `triggerEvent`       | `eventId: string`     | `GameEvent \| null` | 触发指定事件               |
+| `applyOptionEffects` | `option: EventOption` | `void`             | 应用选项效果               |
+| `handleOptionSelect` | `option: EventOption` | `void`             | 处理选项选择               |
+| `startGame`          | -                     | `void`             | 开始游戏（触发第一个事件） |
+| `reset`              | -                     | `void`             | 重置事件引擎               |
 
 **选项效果应用：**
+
 1. 应用状态变化（精力/心情/健康/存款）
 2. 应用技能经验变化
 3. 添加剧情标志
 4. 记录事件历史
 
 **选项选择流程：**
+
 1. 应用选项效果
 2. 推进一个时段
 3. 如果有 `nextEvent`，触发下一个事件
@@ -440,11 +445,13 @@ app.mount("#app");
 **文件**：[StatusBar.vue](file:///d:/huaYouProject/packages/web/src/components/game/StatusBar.vue)
 
 显示游戏状态信息，包括：
+
 - 时间信息（天数、时段）
 - 四维状态条（精力、心情、健康、存款）
 - 技能列表与经验条
 
 **状态条颜色：**
+
 - 低（<30）：红色渐变
 - 中（30-70）：黄色渐变
 - 高（≥70）：绿色渐变
@@ -457,12 +464,13 @@ app.mount("#app");
 
 **Props：**
 
-| 属性 | 类型 | 默认值 | 说明 |
-|------|------|--------|------|
-| `text` | `string` | - | 要显示的文本 |
-| `speed` | `number` | 50 | 打字速度（ms/字） |
+| 属性    | 类型     | 默认值 | 说明              |
+| ------- | -------- | ------ | ----------------- |
+| `text`  | `string` | -      | 要显示的文本      |
+| `speed` | `number` | 50     | 打字速度（ms/字） |
 
 **功能：**
+
 - 打字机动画效果
 - 点击跳过打字效果
 - 完成后显示「点击继续」提示
@@ -475,15 +483,15 @@ app.mount("#app");
 
 **Props：**
 
-| 属性 | 类型 | 默认值 | 说明 |
-|------|------|--------|------|
-| `options` | `EventOption[]` | - | 选项列表 |
-| `disabled` | `boolean` | `false` | 是否禁用 |
+| 属性       | 类型            | 默认值  | 说明     |
+| ---------- | --------------- | ------- | -------- |
+| `options`  | `EventOption[]` | -       | 选项列表 |
+| `disabled` | `boolean`       | `false` | 是否禁用 |
 
 **Events：**
 
-| 事件 | 参数 | 说明 |
-|------|------|------|
+| 事件     | 参数                  | 说明           |
+| -------- | --------------------- | -------------- |
 | `select` | `option: EventOption` | 选择选项时触发 |
 
 ### 4.6 页面视图
@@ -493,6 +501,7 @@ app.mount("#app");
 **文件**：[HomeView.vue](file:///d:/huaYouProject/packages/web/src/views/HomeView.vue)
 
 游戏主菜单，包含：
+
 - 游戏标题与副标题
 - 开始游戏按钮
 - 读取存档按钮（无存档时禁用）
@@ -504,6 +513,7 @@ app.mount("#app");
 **文件**：[GameView.vue](file:///d:/huaYouProject/packages/web/src/views/GameView.vue)
 
 游戏核心界面，包含：
+
 - 顶部导航栏（返回、章节标题、存档按钮）
 - 状态栏
 - 效果提示（选项效果浮动提示）
@@ -513,6 +523,7 @@ app.mount("#app");
 - 章节结束界面
 
 **核心交互流程：**
+
 1. 进入页面时自动开始游戏
 2. 显示事件文本（打字机效果）
 3. 文本完成后显示选项
@@ -524,6 +535,7 @@ app.mount("#app");
 **文件**：[SaveView.vue](file:///d:/huaYouProject/packages/web/src/views/SaveView.vue)
 
 存档管理界面，包含：
+
 - 3个存档槽位
 - 每个槽位显示：存档名、时间、天数、时段、状态
 - 操作按钮：存档、读取、删除
@@ -533,11 +545,12 @@ app.mount("#app");
 **文件**：[SettingsView.vue](file:///d:/huaYouProject/packages/web/src/views/SettingsView.vue)
 
 游戏设置界面，包含：
+
 - 游戏设置（文字速度、背景音乐、音效）
 - 数据管理（重置存档）
 - 关于信息
 
----
+***
 
 ## 5. 共享层模块详解
 
@@ -672,44 +685,44 @@ interface SaveSlot {
 
 #### 5.2.1 时段枚举
 
-| 常量 | 值 | 说明 |
-|------|----|------|
-| `TIME_PERIODS` | `['morning', 'afternoon', 'evening', 'night']` | 时段列表 |
-| `TIME_PERIOD_NAMES` | `{ morning: '早晨', ... }` | 时段中文名 |
-| `TIME_PERIOD_HOURS` | `{ morning: [6, 12], ... }` | 时段小时范围 |
+| 常量                | 值                                             | 说明         |
+| ------------------- | ---------------------------------------------- | ------------ |
+| `TIME_PERIODS`      | `['morning', 'afternoon', 'evening', 'night']` | 时段列表     |
+| `TIME_PERIOD_NAMES` | `{ morning: '早晨', ... }`                     | 时段中文名   |
+| `TIME_PERIOD_HOURS` | `{ morning: [6, 12], ... }`                    | 时段小时范围 |
 
 #### 5.2.2 技能枚举
 
-| 常量 | 值 | 说明 |
-|------|----|------|
-| `SKILL_TYPES` | `['programming', 'operation', 'social']` | 技能类型列表 |
-| `SKILL_NAMES` | `{ programming: '编程入门', ... }` | 技能中文名 |
-| `SKILL_DESCRIPTIONS` | - | 技能描述 |
+| 常量                 | 值                                       | 说明         |
+| -------------------- | ---------------------------------------- | ------------ |
+| `SKILL_TYPES`        | `['programming', 'operation', 'social']` | 技能类型列表 |
+| `SKILL_NAMES`        | `{ programming: '编程入门', ... }`       | 技能中文名   |
+| `SKILL_DESCRIPTIONS` | -                                        | 技能描述     |
 
 #### 5.2.3 状态枚举
 
-| 常量 | 值 | 说明 |
-|------|----|------|
-| `STATUS_KEYS` | `['energy', 'mood', 'health', 'money']` | 状态键名 |
-| `STATUS_NAMES` | - | 状态中文名 |
-| `STATUS_ICONS` | - | 状态图标（emoji） |
+| 常量           | 值                                      | 说明              |
+| -------------- | --------------------------------------- | ----------------- |
+| `STATUS_KEYS`  | `['energy', 'mood', 'health', 'money']` | 状态键名          |
+| `STATUS_NAMES` | -                                       | 状态中文名        |
+| `STATUS_ICONS` | -                                       | 状态图标（emoji） |
 
 #### 5.2.4 存档枚举
 
-| 常量 | 值 | 说明 |
-|------|----|------|
+| 常量               | 值               | 说明              |
+| ------------------ | ---------------- | ----------------- |
 | `SAVE_STORAGE_KEY` | `'huayou_saves'` | localStorage 键名 |
-| `MAX_SAVE_SLOTS` | `3` | 最大存档槽位数 |
-| `GAME_VERSION` | `'0.1.0'` | 游戏版本号 |
+| `MAX_SAVE_SLOTS`   | `3`              | 最大存档槽位数    |
+| `GAME_VERSION`     | `'0.1.0'`        | 游戏版本号        |
 
 #### 5.2.5 事件优先级
 
-| 级别 | 值 |
-|------|----|
-| LOW | 10 |
-| NORMAL | 30 |
-| HIGH | 60 |
-| MUST | 100 |
+| 级别   | 值  |
+| ------ | --- |
+| LOW    | 10  |
+| NORMAL | 30  |
+| HIGH   | 60  |
+| MUST   | 100 |
 
 ### 5.3 平衡配置
 
@@ -734,28 +747,28 @@ GAME_CONFIG = {
 
 #### 5.3.2 技能配置
 
-| 技能 | 最大等级 | 升级经验曲线 |
-|------|----------|-------------|
-| 编程入门 | 5 | [0, 100, 300, 650, 1150, 1850] |
-| 运营基础 | 5 | [0, 100, 300, 650, 1150, 1850] |
-| 社交能力 | 10 | [0, 50, 120, 220, 350, 520, 730, 990, 1310, 1710, 2200] |
+| 技能     | 最大等级 | 升级经验曲线                                            |
+| -------- | -------- | ------------------------------------------------------- |
+| 编程入门 | 5        | [0, 100, 300, 650, 1150, 1850]                          |
+| 运营基础 | 5        | [0, 100, 300, 650, 1150, 1850]                          |
+| 社交能力 | 10       | [0, 50, 120, 220, 350, 520, 730, 990, 1310, 1710, 2200] |
 
 #### 5.3.3 效率系数
 
 | 状态 | 高阈值 | 高效系数 | 正常范围 | 正常系数 | 低阈值 | 低系数 |
-|------|--------|----------|----------|----------|--------|--------|
-| 精力 | >80 | 1.5 | 30-80 | 1.0 | <30 | 0.5 |
-| 心情 | >70 | 1.3 | 30-70 | 1.0 | <30 | 0.7 |
-| 健康 | >80 | 1.5 | 50-80 | 1.0 | <50 | 0.7 |
+| ---- | ------ | -------- | -------- | -------- | ------ | ------ |
+| 精力 | >80    | 1.5      | 30-80    | 1.0      | <30    | 0.5    |
+| 心情 | >70    | 1.3      | 30-70    | 1.0      | <30    | 0.7    |
+| 健康 | >80    | 1.5      | 50-80    | 1.0      | <50    | 0.7    |
 
 #### 5.3.4 时间价值
 
 | 时段 | 效率系数 |
-|------|----------|
-| 早晨 | 1.5 |
-| 下午 | 1.0 |
-| 晚上 | 0.8 |
-| 深夜 | 0.5 |
+| ---- | -------- |
+| 早晨 | 1.5      |
+| 下午 | 1.0      |
+| 晚上 | 0.8      |
+| 深夜 | 0.5      |
 
 ### 5.4 计算工具
 
@@ -763,39 +776,39 @@ GAME_CONFIG = {
 
 #### 5.4.1 状态计算
 
-| 函数 | 签名 | 说明 |
-|------|------|------|
-| `clampStatus` | `(value: number) => number` | 限制状态值在有效范围 |
-| `applyStatusChange` | `(current: PlayerStatus, change: StatusChange) => PlayerStatus` | 应用状态变化 |
-| `checkStatusCondition` | `(status: PlayerStatus, condition) => boolean` | 检查状态条件 |
+| 函数                   | 签名                                                            | 说明                 |
+| ---------------------- | --------------------------------------------------------------- | -------------------- |
+| `clampStatus`          | `(value: number) => number`                                     | 限制状态值在有效范围 |
+| `applyStatusChange`    | `(current: PlayerStatus, change: StatusChange) => PlayerStatus` | 应用状态变化         |
+| `checkStatusCondition` | `(status: PlayerStatus, condition) => boolean`                  | 检查状态条件         |
 
 #### 5.4.2 效率计算
 
-| 函数 | 签名 | 说明 |
-|------|------|------|
-| `getEnergyEfficiency` | `(energy: number) => number` | 计算精力效率 |
-| `getMoodEfficiency` | `(mood: number) => number` | 计算心情效率 |
-| `getHealthEfficiency` | `(health: number) => number` | 计算健康效率 |
+| 函数                   | 签名                               | 说明         |
+| ---------------------- | ---------------------------------- | ------------ |
+| `getEnergyEfficiency`  | `(energy: number) => number`       | 计算精力效率 |
+| `getMoodEfficiency`    | `(mood: number) => number`         | 计算心情效率 |
+| `getHealthEfficiency`  | `(health: number) => number`       | 计算健康效率 |
 | `getOverallEfficiency` | `(status: PlayerStatus) => number` | 计算综合效率 |
 
 #### 5.4.3 技能计算
 
-| 函数 | 签名 | 说明 |
-|------|------|------|
-| `getSkillUpgradeExperience` | `(skill: Skill) => number` | 获取升级所需经验 |
-| `canSkillUpgrade` | `(skill: Skill) => boolean` | 检查是否可升级 |
-| `applySkillExperience` | `(skill: Skill, experience: number) => Skill` | 应用技能经验 |
+| 函数                        | 签名                                          | 说明             |
+| --------------------------- | --------------------------------------------- | ---------------- |
+| `getSkillUpgradeExperience` | `(skill: Skill) => number`                    | 获取升级所需经验 |
+| `canSkillUpgrade`           | `(skill: Skill) => boolean`                   | 检查是否可升级   |
+| `applySkillExperience`      | `(skill: Skill, experience: number) => Skill` | 应用技能经验     |
 
 #### 5.4.4 工具函数
 
-| 函数 | 签名 | 说明 |
-|------|------|------|
-| `generateId` | `() => string` | 生成唯一 ID |
-| `randomInt` | `(min: number, max: number) => number` | 随机整数 |
-| `randomFloat` | `(min: number, max: number) => number` | 随机浮点数 |
-| `deepClone` | `<T>(obj: T) => T` | 深拷贝 |
+| 函数          | 签名                                   | 说明        |
+| ------------- | -------------------------------------- | ----------- |
+| `generateId`  | `() => string`                         | 生成唯一 ID |
+| `randomInt`   | `(min: number, max: number) => number` | 随机整数    |
+| `randomFloat` | `(min: number, max: number) => number` | 随机浮点数  |
+| `deepClone`   | `<T>(obj: T) => T`                     | 深拷贝      |
 
----
+***
 
 ## 6. 游戏核心系统
 
@@ -803,12 +816,12 @@ GAME_CONFIG = {
 
 #### 6.1.1 状态说明
 
-| 状态 | 图标 | 范围 | 说明 |
-|------|------|------|------|
-| 精力 (energy) | ⚡ | 0-100 | 影响学习/工作效率 |
-| 心情 (mood) | 😊 | 0-100 | 影响整体效率和事件触发 |
-| 健康 (health) | ❤️ | 0-100 | 影响效率，过低会生病 |
-| 存款 (money) | 💰 | 0-∞ | 游戏货币，用于消费 |
+| 状态          | 图标 | 范围  | 说明                   |
+| ------------- | ---- | ----- | ---------------------- |
+| 精力 (energy) | ⚡   | 0-100 | 影响学习/工作效率      |
+| 心情 (mood)   | 😊   | 0-100 | 影响整体效率和事件触发 |
+| 健康 (health) | ❤️   | 0-100 | 影响效率，过低会生病   |
+| 存款 (money)  | 💰   | 0-∞   | 游戏货币，用于消费     |
 
 #### 6.1.2 状态变化机制
 
@@ -820,11 +833,11 @@ GAME_CONFIG = {
 
 #### 6.2.1 技能列表
 
-| 技能 | 类型 | 最大等级 | 说明 |
-|------|------|----------|------|
-| 编程入门 | programming | 5 | 影响程序员路线面试通过率 |
-| 运营基础 | operation | 5 | 影响运营路线面试通过率 |
-| 社交能力 | social | 10 | 影响人脉事件触发概率 |
+| 技能     | 类型        | 最大等级 | 说明                     |
+| -------- | ----------- | -------- | ------------------------ |
+| 编程入门 | programming | 5        | 影响程序员路线面试通过率 |
+| 运营基础 | operation   | 5        | 影响运营路线面试通过率   |
+| 社交能力 | social      | 10       | 影响人脉事件触发概率     |
 
 #### 6.2.2 技能升级机制
 
@@ -837,12 +850,12 @@ GAME_CONFIG = {
 
 #### 6.3.1 时段划分
 
-| 时段 | 时间范围 | 效率系数 |
-|------|----------|----------|
-| 早晨 (morning) | 6:00 - 12:00 | 1.5 |
-| 下午 (afternoon) | 12:00 - 18:00 | 1.0 |
-| 晚上 (evening) | 18:00 - 24:00 | 0.8 |
-| 深夜 (night) | 0:00 - 6:00 | 0.5 |
+| 时段             | 时间范围      | 效率系数 |
+| ---------------- | ------------- | -------- |
+| 早晨 (morning)   | 6:00 - 12:00  | 1.5      |
+| 下午 (afternoon) | 12:00 - 18:00 | 1.0      |
+| 晚上 (evening)   | 18:00 - 24:00 | 0.8      |
+| 深夜 (night)     | 0:00 - 6:00   | 0.5      |
 
 #### 6.3.2 时间推进
 
@@ -853,20 +866,21 @@ GAME_CONFIG = {
 ### 6.4 标志系统
 
 剧情标志（flags）用于记录玩家的选择和剧情进度：
+
 - 用于事件触发条件判断
 - 用于选项显示条件判断
 - 保存在存档中
 
----
+***
 
 ## 7. 事件系统
 
 ### 7.1 事件分类
 
-| 类型 | 字段 | 说明 |
-|------|------|------|
-| 主线事件 | `isMain: true` | 按顺序推进的核心剧情 |
-| 随机事件 | `isRandom: true` | 随机触发的支线事件 |
+| 类型     | 字段             | 说明                 |
+| -------- | ---------------- | -------------------- |
+| 主线事件 | `isMain: true`   | 按顺序推进的核心剧情 |
+| 随机事件 | `isRandom: true` | 随机触发的支线事件   |
 
 ### 7.2 事件数据结构
 
@@ -898,16 +912,16 @@ GAME_CONFIG = {
 
 事件可以设置多种触发条件：
 
-| 条件类型 | 字段 | 说明 |
-|----------|------|------|
-| 状态条件 | `minEnergy`, `maxMood` 等 | 状态值范围要求 |
-| 时间条件 | `period`, `minDay`, `maxDay` | 时间范围要求 |
-| 技能条件 | `skills` | 技能等级要求 |
-| 标志条件 | `flags` | 已解锁标志要求 |
+| 条件类型 | 字段                         | 说明           |
+| -------- | ---------------------------- | -------------- |
+| 状态条件 | `minEnergy`, `maxMood` 等    | 状态值范围要求 |
+| 时间条件 | `period`, `minDay`, `maxDay` | 时间范围要求   |
+| 技能条件 | `skills`                     | 技能等级要求   |
+| 标志条件 | `flags`                      | 已解锁标志要求 |
 
 ### 7.4 事件选择流程
 
-```
+````
 玩家选择选项
     ↓
 应用选项效果（状态/技能/标志）
@@ -921,7 +935,7 @@ GAME_CONFIG = {
          优先主线事件？
               ├─ 是 → 选择第一个可用主线事件
               └─ 否 → 按优先级加权随机选择随机事件
-```
+````
 
 ### 7.5 冷却机制
 
@@ -929,7 +943,7 @@ GAME_CONFIG = {
 - 在冷却期内的事件不会被重复触发
 - 冷却基于事件历史记录计算
 
----
+***
 
 ## 8. 存档系统
 
@@ -949,36 +963,36 @@ GAME_CONFIG = {
 
 存档包含完整的游戏状态：
 
-| 字段 | 类型 | 说明 |
-|------|------|------|
-| `id` | `string` | 存档唯一 ID |
-| `name` | `string` | 存档名称 |
-| `timestamp` | `number` | 存档时间戳 |
-| `day` | `number` | 当前天数 |
-| `period` | `TimePeriod` | 当前时段 |
-| `status` | `PlayerStatus` | 玩家状态 |
-| `skills` | `Skill[]` | 技能列表 |
-| `flags` | `string[]` | 剧情标志 |
-| `currentEvent` | `string?` | 当前事件 ID |
-| `version` | `string` | 游戏版本 |
+| 字段           | 类型           | 说明        |
+| -------------- | -------------- | ----------- |
+| `id`           | `string`       | 存档唯一 ID |
+| `name`         | `string`       | 存档名称    |
+| `timestamp`    | `number`       | 存档时间戳  |
+| `day`          | `number`       | 当前天数    |
+| `period`       | `TimePeriod`   | 当前时段    |
+| `status`       | `PlayerStatus` | 玩家状态    |
+| `skills`       | `Skill[]`      | 技能列表    |
+| `flags`        | `string[]`     | 剧情标志    |
+| `currentEvent` | `string?`      | 当前事件 ID |
+| `version`      | `string`       | 游戏版本    |
 
----
+***
 
 ## 9. 依赖关系图
 
 ### 9.1 包依赖关系
 
-```
+````
 @huaYou/web (前端)
     └── @huaYou/shared (共享层)
 
 @huaYou/server (后端，第二阶段)
     └── @huaYou/shared (共享层)
-```
+````
 
 ### 9.2 前端模块依赖
 
-```
+````
 main.ts
     ├── App.vue
     ├── router/index.ts
@@ -994,16 +1008,16 @@ main.ts
           ├── player.store.ts → @shared/*
           ├── game.store.ts → @shared/*
           └── save.store.ts → player.store, game.store, @shared/*
-```
+````
 
 ### 9.3 别名路径配置
 
-| 别名 | 路径 | 说明 |
-|------|------|------|
-| `@/*` | `src/*` | 前端源码根目录 |
+| 别名        | 路径              | 说明           |
+| ----------- | ----------------- | -------------- |
+| `@/*`       | `src/*`           | 前端源码根目录 |
 | `@shared/*` | `../shared/src/*` | 共享层源码目录 |
 
----
+***
 
 ## 10. 项目运行与构建
 
@@ -1024,26 +1038,26 @@ pnpm install
 
 所有命令在项目根目录执行：
 
-| 命令 | 说明 |
-|------|------|
-| `pnpm dev:web` | 启动前端开发服务器 |
-| `pnpm build:web` | 构建前端生产产物 |
-| `pnpm lint` | 全量代码规范检查 |
-| `pnpm format` | 全量代码自动格式化 |
+| 命令              | 说明                     |
+| ----------------- | ------------------------ |
+| `pnpm dev:web`    | 启动前端开发服务器       |
+| `pnpm build:web`  | 构建前端生产产物         |
+| `pnpm lint`       | 全量代码规范检查         |
+| `pnpm format`     | 全量代码自动格式化       |
 | `pnpm type-check` | 全局 TypeScript 类型检查 |
 
 ### 10.4 前端专用命令
 
 在 `packages/web` 目录下执行：
 
-| 命令 | 说明 |
-|------|------|
-| `pnpm dev` | 启动 Vite 开发服务器 |
-| `pnpm build` | 类型检查 + 生产构建 |
-| `pnpm preview` | 预览生产构建 |
-| `pnpm lint` | ESLint 检查 |
-| `pnpm format` | Prettier 格式化 |
-| `pnpm type-check` | TypeScript 类型检查 |
+| 命令              | 说明                 |
+| ----------------- | -------------------- |
+| `pnpm dev`        | 启动 Vite 开发服务器 |
+| `pnpm build`      | 类型检查 + 生产构建  |
+| `pnpm preview`    | 预览生产构建         |
+| `pnpm lint`       | ESLint 检查          |
+| `pnpm format`     | Prettier 格式化      |
+| `pnpm type-check` | TypeScript 类型检查  |
 
 ### 10.5 构建配置
 
@@ -1059,7 +1073,7 @@ pnpm install
 - 严格模式：开启
 - 路径别名：与 Vite 配置一致
 
----
+***
 
 ## 11. 开发规范与约定
 
@@ -1072,16 +1086,16 @@ pnpm install
 
 ### 11.2 目录约定
 
-| 目录 | 用途 |
-|------|------|
-| `components/` | 可复用 UI 组件 |
-| `views/` | 页面级组件 |
-| `stores/` | Pinia 状态管理 |
-| `hooks/` | 组合式函数（业务逻辑） |
-| `utils/` | 纯工具函数 |
-| `types/` | TypeScript 类型定义 |
-| `data/` | 静态数据配置 |
-| `assets/` | 构建内资源 |
+| 目录          | 用途                   |
+| ------------- | ---------------------- |
+| `components/` | 可复用 UI 组件         |
+| `views/`      | 页面级组件             |
+| `stores/`     | Pinia 状态管理         |
+| `hooks/`      | 组合式函数（业务逻辑） |
+| `utils/`      | 纯工具函数             |
+| `types/`      | TypeScript 类型定义    |
+| `data/`       | 静态数据配置           |
+| `assets/`     | 构建内资源             |
 
 ### 11.3 Store 约定
 
@@ -1097,7 +1111,7 @@ pnpm install
 - 主线事件设置 `isMain: true`
 - 随机事件设置 `isRandom: true`
 
----
+***
 
 ## 12. 第二阶段规划
 
@@ -1106,11 +1120,13 @@ pnpm install
 **包**：`@huaYou/server`
 
 **技术栈**：
+
 - NestJS 框架
 - MongoDB 数据库
 - Mongoose ODM
 
 **模块规划**：
+
 - 用户模块（user）：注册、登录、用户信息
 - 存档模块（save）：云存档同步
 - 游戏配置模块（game/event）：事件配置管理
@@ -1124,7 +1140,7 @@ pnpm install
 4. 逐步将游戏逻辑迁移到后端
 5. 前端适配 API 调用
 
----
+***
 
 ## 附录
 
@@ -1136,6 +1152,7 @@ pnpm install
 
 ### B. 版本历史
 
-| 版本 | 日期 | 说明 |
-|------|------|------|
+| 版本   | 日期       | 说明                   |
+| ------ | ---------- | ---------------------- |
 | v0.1.0 | 2026-07-14 | 初始版本，MVP 阶段文档 |
+
