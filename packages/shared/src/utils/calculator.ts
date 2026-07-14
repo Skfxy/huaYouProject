@@ -1,7 +1,8 @@
 // 话游 - 数值计算工具函数
 
-import type { PlayerStatus, StatusChange, Skill } from '../types/game.types'
-import { EFFICIENCY_MULTIPLIER, GAME_CONFIG } from '../config/balance.config'
+import type { PlayerStatus, StatusChange, Skill, SkillType } from '../types/game.types'
+import { EFFICIENCY_MULTIPLIER, GAME_CONFIG, SLEEP_RECOVERY, SKILL_CONFIGS } from '../config/balance.config'
+import { START_DAY_OF_WEEK, WEEKEND_DAYS } from '../constants/game.enum'
 
 // ==================== 状态计算 ====================
 
@@ -89,16 +90,29 @@ export function getOverallEfficiency(status: PlayerStatus): number {
 // ==================== 技能计算 ====================
 
 /**
+ * 获取技能配置
+ */
+function getSkillConfig(skillId: SkillType) {
+  return SKILL_CONFIGS.find(c => c.id === skillId)
+}
+
+/**
  * 计算技能升级所需经验
  */
 export function getSkillUpgradeExperience(skill: Skill): number {
-  const config = {
-    programming: [0, 100, 300, 650, 1150, 1850],
-    operation: [0, 100, 300, 650, 1150, 1850],
-    social: [0, 50, 120, 220, 350, 520, 730, 990, 1310, 1710, 2200]
-  }
-  const required = config[skill.id]
-  return skill.level < required.length ? required[skill.level] : Infinity
+  const config = getSkillConfig(skill.id)
+  if (!config) return Infinity
+  return skill.level < config.experienceRequired.length
+    ? config.experienceRequired[skill.level]
+    : Infinity
+}
+
+/**
+ * 获取技能最大等级
+ */
+export function getSkillMaxLevel(skillId: SkillType): number {
+  const config = getSkillConfig(skillId)
+  return config ? config.maxLevel : GAME_CONFIG.maxSkillLevel
 }
 
 /**
@@ -106,7 +120,7 @@ export function getSkillUpgradeExperience(skill: Skill): number {
  */
 export function canSkillUpgrade(skill: Skill): boolean {
   return skill.experience >= getSkillUpgradeExperience(skill) &&
-         skill.level < GAME_CONFIG.maxSkillLevel
+         skill.level < getSkillMaxLevel(skill.id)
 }
 
 /**
@@ -124,7 +138,108 @@ export function applySkillExperience(skill: Skill, experience: number): Skill {
   return {
     ...skill,
     level: newLevel,
-    experience: newExperience
+    experience: newExperience,
+    maxExperience: getSkillUpgradeExperience({ ...skill, level: newLevel, experience: newExperience })
+  }
+}
+
+// ==================== 睡眠与作息计算 ====================
+
+/**
+ * 计算某天是星期几
+ * 游戏第1天是周五 (dayOfWeek=5)
+ */
+export function getDayOfWeek(day: number): number {
+  return (START_DAY_OF_WEEK + day - 1) % 7
+}
+
+/**
+ * 判断是否是周末
+ */
+export function isWeekend(dayOfWeek: number): boolean {
+  return WEEKEND_DAYS.includes(dayOfWeek)
+}
+
+/**
+ * 判断是否是周六
+ */
+export function isSaturday(dayOfWeek: number): boolean {
+  return dayOfWeek === 6
+}
+
+/**
+ * 判断是否是周日
+ */
+export function isSunday(dayOfWeek: number): boolean {
+  return dayOfWeek === 0
+}
+
+/**
+ * 判断是否是发薪日（每月1日，对应第1、31...天）
+ */
+export function isPayday(day: number): boolean {
+  return day % 30 === 1
+}
+
+/**
+ * 判断是否是月末（第30天为一个月）
+ */
+export function isMonthEnd(day: number): boolean {
+  return day % 30 === 0
+}
+
+/**
+ * 计算正常睡眠后的状态恢复
+ * @param isWeekend 是否是周末（周末懒觉额外恢复）
+ * @param consecutiveRegularSleep 连续规律作息天数
+ */
+export function calculateSleepRecovery(
+  isWeekend: boolean,
+  consecutiveRegularSleep: number
+): StatusChange {
+  let energyRecovery = SLEEP_RECOVERY.normal
+  const healthChange = SLEEP_RECOVERY.healthRecoveryRegular
+  let moodChange = 5
+
+  if (consecutiveRegularSleep >= 7) {
+    energyRecovery = Math.round(energyRecovery * SLEEP_RECOVERY.regularBonusMultiplier)
+    moodChange += 5
+  }
+
+  if (isWeekend) {
+    energyRecovery += SLEEP_RECOVERY.weekendBonus
+    moodChange += 3
+  }
+
+  return {
+    energy: energyRecovery,
+    mood: moodChange,
+    health: healthChange,
+    money: 0
+  }
+}
+
+/**
+ * 计算熬夜后的惩罚
+ */
+export function calculateOvertimePenalty(): StatusChange {
+  return {
+    energy: -SLEEP_RECOVERY.overtimePenalty,
+    mood: -SLEEP_RECOVERY.moodOvertimePenalty,
+    health: -SLEEP_RECOVERY.healthOvertimePenalty,
+    money: 0
+  }
+}
+
+/**
+ * 计算熬夜后补觉的恢复量（比正常睡眠少）
+ */
+export function calculateOvertimeRecovery(): StatusChange {
+  return {
+    energy: SLEEP_RECOVERY.overtime,
+    mood: -3,
+    health: -1,
+    money: 0
   }
 }
 

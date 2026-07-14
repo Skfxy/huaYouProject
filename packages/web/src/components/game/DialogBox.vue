@@ -126,4 +126,39 @@ onMounted(() => {
     opacity: 1;
   }
 }
+
+@media (max-width: 768px) {
+  .dialog-box {
+    padding: 20px;
+    border-radius: 12px;
+    min-height: 100px;
+  }
+
+  .dialog-text {
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  .click-hint {
+    font-size: 11px;
+    bottom: 8px;
+    right: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dialog-box {
+    padding: 16px;
+    min-height: 90px;
+  }
+
+  .dialog-text {
+    font-size: 14px;
+  }
+
+  .click-hint {
+    bottom: 6px;
+    right: 10px;
+  }
+}
 </style>

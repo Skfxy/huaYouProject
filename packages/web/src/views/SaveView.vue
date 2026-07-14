@@ -121,6 +121,7 @@ function goBack() {
 <style scoped>
 .save-view {
   min-height: 100vh;
+  min-height: 100svh;
   display: flex;
   flex-direction: column;
   background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3a 50%, #0a0a2a 100%);
@@ -277,5 +278,94 @@ function goBack() {
 
 .action-button.delete:hover {
   background: rgba(244, 67, 54, 0.3);
+}
+
+@media (max-width: 768px) {
+  .save-header {
+    padding: 12px 16px;
+    gap: 12px;
+  }
+
+  .back-button {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+
+  .save-header h1 {
+    font-size: 20px;
+  }
+
+  .save-content {
+    padding: 16px;
+  }
+
+  .save-slot {
+    padding: 16px;
+  }
+
+  .slot-status {
+    flex-wrap: wrap;
+    gap: 8px 12px;
+  }
+
+  .slot-actions {
+    flex-wrap: wrap;
+  }
+
+  .action-button {
+    padding: 10px 12px;
+    font-size: 13px;
+    min-height: 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  .save-header {
+    padding: 10px 12px;
+  }
+
+  .save-header h1 {
+    font-size: 18px;
+  }
+
+  .save-content {
+    padding: 12px;
+  }
+
+  .save-slots {
+    gap: 12px;
+  }
+
+  .save-slot {
+    padding: 14px;
+    border-radius: 10px;
+  }
+
+  .slot-header {
+    margin-bottom: 10px;
+  }
+
+  .slot-id {
+    font-size: 15px;
+  }
+
+  .slot-info {
+    margin-bottom: 12px;
+  }
+
+  .slot-name {
+    font-size: 15px;
+  }
+
+  .slot-actions {
+    gap: 6px;
+  }
+
+  .action-button {
+    padding: 10px 8px;
+    font-size: 13px;
+    flex: 1 1 calc(50% - 3px);
+    min-height: 44px;
+  }
 }
 </style>

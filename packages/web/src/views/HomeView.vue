@@ -78,6 +78,7 @@ function openSettings() {
   align-items: center;
   justify-content: center;
   position: relative;
+  background-color: #0a0a1a;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -87,7 +88,7 @@ function openSettings() {
 .vignette {
   position: absolute;
   inset: 0;
-  background: 
+  background:
     radial-gradient(
       ellipse 60% 50% at 50% 45%,
       rgba(8, 10, 20, 0.25) 0%,
@@ -133,7 +134,9 @@ function openSettings() {
 }
 
 .game-title {
-  font-family: "Microsoft YaHei", "PingFang SC", "Hiragino Sans GB", "SimHei", "Heiti SC", sans-serif;
+  font-family:
+    "Microsoft YaHei", "PingFang SC", "Hiragino Sans GB", "SimHei", "Heiti SC",
+    sans-serif;
   font-size: 120px;
   font-weight: 900;
   letter-spacing: 8px;
@@ -149,7 +152,7 @@ function openSettings() {
   -webkit-text-fill-color: transparent;
   background-clip: text;
   filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.8))
-          drop-shadow(0 2px 4px rgba(0, 0, 0, 0.9));
+    drop-shadow(0 2px 4px rgba(0, 0, 0, 0.9));
   animation: titleAppear 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.8s forwards;
   opacity: 0;
   transform: scale(0.85);
@@ -175,19 +178,11 @@ function openSettings() {
 .subtitle-line {
   width: 80px;
   height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.45)
-  );
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45));
 }
 
 .subtitle-line:last-child {
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0.45),
-    transparent
-  );
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.45), transparent);
 }
 
 .game-subtitle {
@@ -330,5 +325,85 @@ function openSettings() {
 
 .copyright {
   margin: 0;
+}
+
+@media (max-width: 768px) {
+  .home-content {
+    gap: 40px;
+    padding: 24px;
+  }
+
+  .game-title {
+    font-size: 72px;
+    letter-spacing: 4px;
+  }
+
+  .subtitle-wrap {
+    gap: 12px;
+    margin: 16px 0 8px;
+  }
+
+  .subtitle-line {
+    width: 40px;
+  }
+
+  .game-subtitle {
+    font-size: 16px;
+    letter-spacing: 6px;
+  }
+
+  .game-slogan {
+    font-size: 13px;
+    letter-spacing: 3px;
+  }
+
+  .menu-section {
+    min-width: 200px;
+    gap: 0;
+  }
+
+  .menu-button {
+    padding: 16px 32px;
+    font-size: 15px;
+    letter-spacing: 4px;
+  }
+
+  .menu-button:hover:not(:disabled) {
+    letter-spacing: 6px;
+  }
+
+  .menu-button.primary {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .home-content {
+    gap: 32px;
+    padding: 16px;
+  }
+
+  .game-title {
+    font-size: 56px;
+    letter-spacing: 2px;
+  }
+
+  .game-subtitle {
+    font-size: 14px;
+    letter-spacing: 4px;
+  }
+
+  .menu-section {
+    min-width: 180px;
+  }
+
+  .menu-button {
+    padding: 14px 24px;
+    font-size: 14px;
+  }
+
+  .footer-section {
+    font-size: 10px;
+  }
 }
 </style>

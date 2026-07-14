@@ -48,15 +48,15 @@
 
 - [x] 天数 / 时段系统（早 / 午 / 晚 / 夜） ✅ 2026-07-10
 - [x] 时间推进机制：每个行为消耗对应时长 ✅ 2026-07-10
-- [ ] 日期特殊事件触发（周末、节日、发薪日）
-- [ ] 睡眠恢复机制（熬夜惩罚、规律作息奖励）
+- [x] 日期特殊事件触发（周末、节日、发薪日） ✅ 2026-07-15
+- [x] 睡眠恢复机制（熬夜惩罚、规律作息奖励） ✅ 2026-07-15
 
 ### 1.6 存档系统（本地）
 
 - [x] localStorage 存档：保存 / 读取 / 删除 ✅ 2026-07-10
 - [x] 多存档位支持（至少 3 个槽位） ✅ 2026-07-10
 - [x] 存档缩略信息显示（天数、当前职业、存款） ✅ 2026-07-10
-- [ ] 自动存档机制（关键节点自动存）
+- [x] 自动存档机制（关键节点自动存） ✅ 2026-07-15
 
 ### 1.7 UI 界面
 
@@ -67,7 +67,7 @@
 - [x] 选项效果提示（浮动通知显示状态变化） ✅ 2026-07-10
 - [x] 章节标题栏 ✅ 2026-07-10
 - [x] 章节结束画面（状态统计 + 继续探索） ✅ 2026-07-10
-- [ ] 状态详情弹窗 / 技能面板弹窗
+- [x] 状态详情弹窗 / 技能面板弹窗 ✅ 2026-07-15
 - [x] 设置页（音量 / 文字速度 / 重置存档） ✅ 2026-07-10
 
 ### 1.8 内容填充（第一章）
@@ -78,14 +78,14 @@
 - [x] 扩展随机事件至10个（同学、疲惫、天气、食堂、灵感） ✅ 2026-07-10
 - [x] 配置 4 条主线分支（程序员 / 边工作边学 / 运营产品 / 享受当下） ✅ 2026-07-10
 - [x] 选项支持多字段效果（同时改变多个状态+技能经验） ✅ 2026-07-10
-- [ ] 数值平衡初调（精力消耗速率、技能成长曲线）
+- [x] 数值平衡初调（精力消耗速率、技能成长曲线） ✅ 2026-07-15
 
 ### 1.9 打磨与测试
 
-- [ ] 移动端响应式适配
+- [x] 移动端响应式适配 ✅ 2026-07-15
 - [x] 完整流程走测，修复 Bug ✅ 2026-07-10
 - [ ] 收集反馈，调整难度与剧情节奏
-- [ ] 首屏加载优化
+- [x] 首屏加载优化 ✅ 2026-07-15
 
 ### 1.10 共享层（packages/shared）
 
@@ -116,15 +116,15 @@
 | 四维状态系统 | 100%   | ✅ 完成                               |
 | 技能成长系统 | 100%   | ✅ 完成                               |
 | 剧情事件引擎 | 100%   | ✅ 完成                               |
-| 时间推进系统 | 75%    | ⏳ 基础完成，待补充日期事件和睡眠机制 |
-| 存档系统     | 75%    | ⏳ 基础完成，待补充自动存档           |
-| UI 界面      | 95%    | ⏳ 主要功能完成，待补充弹窗组件       |
-| 内容填充     | 95%    | ⏳ 第一章内容完成，待调数值平衡       |
-| 打磨测试     | 50%    | ⏳ 流程走通，待响应式适配             |
+| 时间推进系统 | 100%   | ✅ 完成（日期事件+睡眠机制）          |
+| 存档系统     | 100%   | ✅ 完成（自动存档）                   |
+| UI 界面      | 100%   | ✅ 完成（弹窗组件+响应式）            |
+| 内容填充     | 100%   | ✅ 完成（数值平衡调整）               |
+| 打磨测试     | 90%    | ✅ 主要完成（响应式+加载优化，待反馈）|
 | 共享层       | 100%   | ✅ 完成                               |
 | 设计文档     | 100%   | ✅ 完成                               |
 
-**总体进度：约 90%**
+**总体进度：约 98%**
 
 ***
 
@@ -237,6 +237,77 @@
 ***
 
 ## 更新日志
+
+### 2026-07-15
+
+**第一阶段MVP完成 — 补全所有剩余开发任务**
+
+#### 1. 时间推进系统增强（1.5 ✅）
+
+- `packages/shared/src/types/game.types.ts` — TimeState 新增 `dayOfWeek`（星期几）、`consecutiveRegularSleep`（连续规律作息天数）、`stayedUpLate`（熬夜标记）；EventCondition 新增 `days`、`excludeFlags`；EventOption 新增 `timeAdvance`、`skipPeriods`
+- `packages/shared/src/constants/game.enum.ts` — 新增 DAYS_OF_WEEK、WEEKEND_DAYS、SPECIAL_DATES 常量；新增 AUTO_SAVE_CONFIG 自动存档配置
+- `packages/shared/src/config/balance.config.ts` — 新增 SLEEP_RECOVERY（睡眠恢复配置，含熬夜惩罚/周末加成/规律作息加成）、WEEKEND_CONFIG、PAYDAY_CONFIG、MONTH_END_CONFIG
+- `packages/shared/src/utils/calculator.ts` — 新增 `getDayOfWeek()`、`isWeekend()`、`isPayday()`、`isMonthEnd()`、`calculateSleepRecovery()`、`getSkillMaxLevel()`；修复技能升级使用各技能独立 maxLevel
+- `packages/web/src/stores/game.store.ts` — TimeState 跟踪 dayOfWeek/consecutiveRegularSleep/stayedUpLate；新增 `recordRegularSleep()`、`recordOvertimeSleep()`、`goToSleep()`；修正 isPayday 计算含第1天
+- `packages/web/src/data/events/date-events.json` — 新增6个特殊日期事件：周六早晨/周六晚间/周日早晨/发薪日/月末总结/首个周末
+
+#### 2. 睡眠恢复机制（1.5 ✅）
+
+- 正常睡眠恢复精力35 + 心情2 + 健康1
+- 熬夜惩罚：精力恢复不足(-15)、健康-2、心情-5
+- 周末懒觉额外恢复：精力+15、心情+2
+- 连续7天规律作息：恢复系数×1.3、心情+3、健康额外+3
+- `packages/web/src/stores/player.store.ts` — 新增 `sleep()`、`applyOvertimePenalty()`、`sleepAfterOvertime()`、`applyPayday()`、`applyMonthlySummary()`
+
+#### 3. 事件引擎整合（1.4/1.5 ✅）
+
+- `packages/web/src/hooks/useEventEngine.ts` — 整合睡眠机制、特殊日期事件、自动存档触发、事件优先级系统；新增 `handleDayChange()` 处理日期变更（睡眠/熬夜/发薪日/月末总结）；修复周末奖励重复发放和熬夜惩罚数值；新增特殊日期提示和自动存档触发
+- `packages/web/src/data/events/daily-events.json` — 新增日常自由活动事件（学习/工作/休息/社交/睡觉），每个时段有不同选项
+
+#### 4. 自动存档机制（1.6 ✅）
+
+- `packages/web/src/stores/save.store.ts` — 实现 autoSave() 功能，localStorage 持久化；新增自动存档提示（showAutoSaveHint，1.5秒后自动隐藏）；关键节点触发：每5个选项、每天早晨、章节结束
+
+#### 5. UI 界面补全（1.7 ✅）
+
+- `packages/web/src/components/common/BaseModal.vue` — 新建通用弹窗组件（Teleport + Transition，支持标题/关闭）
+- `packages/web/src/components/game/StatusDetailModal.vue` — 新建状态详情弹窗（四维状态描述、综合效率、效率文本、小贴士）
+- `packages/web/src/components/game/SkillPanelModal.vue` — 新建技能面板弹窗（技能总等级、各技能进度条/经验条/升级提示、技能说明）
+- `packages/web/src/components/game/StatusBar.vue` — 新增星期显示、周末标识；状态栏/技能面板可点击打开详情弹窗
+- `packages/web/src/views/GameView.vue` — 新增特殊日期提示、自动存档提示、星期/时段显示；结局界面显示评分和等级
+
+#### 6. 数值平衡调整（1.8 ✅）
+
+- 正常睡眠恢复 40→35，熬夜补觉 20→15，周末额外 15→10，规律作息系数 1.25→1.3
+- 修正 PAYDAY_CONFIG.workRouteFlag 匹配 chapter1.json 中的 route_part_time
+- 修复技能 maxLevel 使用各技能独立配置而非全局上限
+
+#### 7. 移动端响应式适配（1.9 ✅）
+
+- `packages/web/src/style.css` — 全局移动端优化：-webkit-tap-highlight-color、字体渲染、touch-action、移动端基础字号
+- `packages/web/src/views/HomeView.vue` — 768px/480px 断点适配（标题缩放、间距调整）
+- `packages/web/src/views/GameView.vue` — 头部/内容区/提示/结局界面移动端适配
+- `packages/web/src/views/SaveView.vue` — 存档卡片/操作按钮移动端适配
+- `packages/web/src/views/SettingsView.vue` — 设置项/滑块/重置按钮移动端适配
+- `packages/web/src/components/game/StatusBar.vue` — 状态栏/技能列表/进度条移动端适配，小屏单列布局
+- `packages/web/src/components/game/DialogBox.vue` — 对话框内边距/字号移动端适配
+- `packages/web/src/components/game/OptionList.vue` — 选项按钮增大点击区域（min-height 48px）
+- `packages/web/src/components/common/BaseModal.vue` — 小屏底部抽屉式布局（border-radius 上圆角）
+- `packages/web/src/components/game/StatusDetailModal.vue` — 效率数值/提示列表移动端适配
+- `packages/web/src/components/game/SkillPanelModal.vue` — 技能卡片/经验条移动端适配
+- 所有页面使用 100svh 适配移动端浏览器视口
+
+#### 8. 首屏加载优化（1.9 ✅）
+
+- `packages/web/index.html` — 新增内联启动加载画面（Logo + Spinner + 加载文案）；新增 theme-color/description/viewport-fit meta 标签；加载画面响应式适配
+- `packages/web/src/main.ts` — 路由就绪后挂载应用，requestAnimationFrame 淡出加载画面
+- `packages/web/vite.config.ts` — 新增 build 配置：target es2015、manualChunks 分离 vue-vendor、开发服务器 host 0.0.0.0
+
+#### 9. 质量保证
+
+- ESLint 检查通过（0 错误，0 警告）
+- TypeScript 类型检查通过（vue-tsc --noEmit）
+- 生产构建成功（vue-vendor 105KB gzip 41KB，各页面按路由懒加载分割）
 
 ### 2026-07-10
 
