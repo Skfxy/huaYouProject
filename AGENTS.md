@@ -41,6 +41,16 @@ pnpm type-check
 
 开发前需要仔细阅读文件目录结构，保证正确的、在合适位置修改和添加文件
 
+### 2.2 文档更新规范
+
+每次进行 Bug 修复、功能优化、新功能开发或重构时，必须在 `docs/changelogs/` 目录下新建对应文档记录：
+
+1. **文件命名**: `YYYY-MM-DD_vX.Y.Z_short-description.md`（如 `2026-07-15_v0.1.1_bug-fixes.md`）
+2. **文档模板**: 参考 `docs/changelogs/README.md` 中的标准模板
+3. **状态标记**: 所有任务项必须使用 checkbox 标记状态：`- [ ]` 未开始 / `- [x]` 已完成
+4. **索引更新**: 新建文档后必须同步更新 `docs/changelogs/README.md` 中的索引表格
+5. **历史记录**: 历史更新日志统一存放在 `docs/changelogs/` 目录，开发路线图在 `docs/todolist.md`
+
 ### 3.仓库结构概览
 
 ````
@@ -50,6 +60,11 @@ huayou/
 │   ├── server/       # 后端服务 ⏸️ 预留占位，第二阶段正式开发
 │   └── shared/       # 前后端共享：类型定义 / 常量 / 纯工具函数
 ├── docs/             # 详细开发文档（本文件为导航入口，详情见此目录）
+│   ├── game-design/  # 游戏设计文档（世界观、系统、剧情等）
+│   ├── changelogs/   # 更新日志与优化记录（每次迭代新建文档）
+│   ├── README.md     # 文档总索引
+│   ├── code-wiki.md  # 代码知识库
+│   └── todolist.md   # 开发路线图 TodoList（不含历史日志）
 ├── scripts/          # 构建、检查、部署脚本
 ├── AGENTS.md         # 本文件
 ├── README.md         # 给人类看的项目说明
@@ -59,28 +74,37 @@ huayou/
 #### 3.1 文档目录
 
 ````
-docs/game-design/
-├── README.md                    # 设计文档索引
-├── world-setting.md             # 世界观设定
-├── characters.md                # 角色档案
-├── systems/
-│   ├── status-system.md         # 四维状态系统
-│   ├── skill-system.md          # 技能成长系统
-│   └── time-system.md           # 时间推进系统
-├── chapters/
-│   ├── chapter1.md              # 第一章：重启的2018（完整剧情）
-│   ├── chapter2-plan.md         # 第二章：面试季（规划）
-│   └── chapter3-plan.md         # 第三章：职场新人（规划）
-├── events/
-│   ├── chapter1-events.md       # 第一章随机事件池
-│   ├── common-events.md         # 通用事件
-│   └── event-rules.md           # 事件触发规则
-└── endings/
-    ├── chapter1-endings.md      # 第一章结局分支
-    └── ending-rules.md          # 结局判定逻辑
+docs/
+├── game-design/                    # 游戏设计文档
+│   ├── README.md                   # 设计文档索引
+│   ├── world-setting.md            # 世界观设定
+│   ├── characters.md               # 角色档案
+│   ├── systems/
+│   │   ├── status-system.md        # 四维状态系统
+│   │   ├── skill-system.md         # 技能成长系统
+│   │   └── time-system.md          # 时间推进系统
+│   ├── chapters/
+│   │   ├── chapter1.md             # 第一章：重启的2018（完整剧情）
+│   │   ├── chapter2-plan.md        # 第二章：面试季（规划）
+│   │   └── chapter3-plan.md        # 第三章：职场新人（规划）
+│   ├── events/
+│   │   ├── chapter1-events.md      # 第一章随机事件池
+│   │   ├── common-events.md        # 通用事件
+│   │   └── event-rules.md          # 事件触发规则
+│   └── endings/
+│       ├── chapter1-endings.md     # 第一章结局分支
+│       └── ending-rules.md         # 结局判定逻辑
+├── changelogs/                     # 更新日志与优化记录
+│   ├── README.md                   # 更新日志索引与使用规范
+│   ├── 2026-07-10_v0.1.0_initial-project-setup.md
+│   ├── 2026-07-15_v0.1.0_mvp-completion.md
+│   └── 2026-07-15_v0.1.1_bug-fixes-and-optimizations.md
+├── README.md                       # 文档总索引
+├── code-wiki.md                    # 代码知识库
+└── todolist.md                     # 开发路线图（三阶段计划）
 ````
 
-#### 3.1 前端目录
+#### 3.2 前端目录
 
 ````
 packages/web/
@@ -90,22 +114,25 @@ packages/web/
 ├── src/
 │   ├── assets/                 # 构建内资源
 │   │   ├── images/             # 封面、场景图
-│   │   ├── audios/             # BGM、音效
+│   │   ├── audios/             # BGM、音效（预留）
 │   │   └── styles/             # 全局样式、变量、主题
 │   ├── components/             # 通用组件
-│   │   ├── common/             # 基础组件（按钮、弹窗、提示）
+│   │   ├── common/             # 基础组件（弹窗）
+│   │   │   └── BaseModal.vue   # 通用弹窗组件
 │   │   ├── game/               # 游戏专属组件
-│   │   │   ├── StatusBar.vue   # 状态栏（精力/心情/健康/存款）
-│   │   │   ├── DialogBox.vue   # 剧情文本对话框
+│   │   │   ├── StatusBar.vue   # 状态栏（精力/心情/健康/存款+技能）
+│   │   │   ├── DialogBox.vue   # 剧情文本对话框（打字机效果）
 │   │   │   ├── OptionList.vue  # 选项列表
-│   │   │   └── TagCloud.vue    # 技能/标签展示
-│   │   └── layout/             # 布局组件
+│   │   │   ├── StatusDetailModal.vue  # 状态详情弹窗
+│   │   │   └── SkillPanelModal.vue    # 技能面板弹窗
+│   │   └── index.ts            # 组件导出
 │   ├── stores/                 # Pinia 状态管理
-│   │   ├── game.store.ts       # 游戏主状态（天数、场景、进度）
-│   │   ├── player.store.ts     # 玩家属性状态
-│   │   ├── skill.store.ts      # 技能系统
-│   │   └── save.store.ts       # 存档管理
+│   │   ├── index.ts            # Store 导出
+│   │   ├── game.store.ts       # 游戏主状态（天数、时段、当前事件、进度）
+│   │   ├── player.store.ts     # 玩家属性状态（四维状态+技能）
+│   │   └── save.store.ts       # 存档管理（本地存档+自动存档）
 │   ├── views/                  # 页面级视图
+│   │   ├── index.ts            # 视图导出
 │   │   ├── HomeView.vue        # 主菜单页
 │   │   ├── GameView.vue        # 游戏主界面
 │   │   ├── SaveView.vue        # 存档页
@@ -113,32 +140,29 @@ packages/web/
 │   ├── router/                 # 路由配置
 │   │   └── index.ts
 │   ├── hooks/                  # 组合式函数
-│   │   ├── useGameEngine.ts    # 游戏引擎核心逻辑
-│   │   ├── useEventTrigger.ts  # 事件触发判定
-│   │   └── useLocalSave.ts     # 本地存档封装
+│   │   └── useEventEngine.ts   # 事件引擎核心逻辑（事件选择、选项处理、时间推进）
 │   ├── data/                   # 游戏静态配置（第一阶段放前端）
-│   │   ├── events/             # 剧情事件表
-│   │   │   ├── chapter1.json   # 第一章事件配置
-│   │   │   └── random.json     # 随机事件池
-│   │   ├── skills.json         # 技能树配置
-│   │   └── achievements.json   # 成就配置
+│   │   └── events/             # 剧情事件表
+│   │       ├── chapter1.json   # 第一章主线事件（序章+4条路线）
+│   │       ├── daily-events.json # 日常自由活动事件
+│   │       └── date-events.json  # 特殊日期事件（周末/发薪日/月末）
 │   ├── utils/                  # 工具函数
-│   │   ├── calculator.ts       # 数值计算
-│   │   ├── typewriter.ts       # 打字机效果
-│   │   └── storage.ts          # 本地存储封装
+│   │   └── index.ts            # 工具导出
 │   ├── types/                  # 前端专属类型
-│   │   └── index.d.ts
+│   │   └── index.ts
 │   ├── App.vue
-│   └── main.ts
+│   ├── main.ts
+│   └── style.css               # 全局样式（含响应式适配）
 ├── index.html
 ├── vite.config.ts
 ├── tsconfig.json
+├── .eslintrc.cjs
 ├── .env.development
 ├── .env.production
 └── package.json
 ````
 
-#### 3.2 后端目录（暂未启用）
+#### 3.3 后端目录（暂未启用）
 
 ````
 packages/server/
@@ -176,7 +200,7 @@ packages/server/
 └── package.json
 ````
 
-#### 3.3 共享层
+#### 3.4 共享层
 
 ````
 packages/shared/
