@@ -9,6 +9,8 @@
         "id": "option_0_1",
         "text": "继续沉睡",
         "effects": { "energy": 10, "mood": 5 },
+        "flags": ["action_sleep"],
+        "skipPeriods": 1,
         "nextEvent": "scene_1_1"
       }
     ],

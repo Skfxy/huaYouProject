@@ -19,6 +19,7 @@ import {
   checkStatusCondition,
   applySkillExperience,
   canSkillUpgrade,
+  getSkillUpgradeExperience,
   calculateSleepRecovery,
   calculateOvertimePenalty,
   calculateOvertimeRecovery,
@@ -35,13 +36,22 @@ export const usePlayerStore = defineStore("player", () => {
 
   const status = ref<PlayerStatus>({ ...GAME_CONFIG.initialStatus });
   const skills = ref<Skill[]>(
-    SKILL_CONFIGS.map((config) => ({
-      id: config.id,
-      name: config.name,
-      level: 0,
-      experience: 0,
-      maxExperience: config.experienceRequired[1] || 100,
-    })),
+    SKILL_CONFIGS.map((config) => {
+      const skill: Skill = {
+        id: config.id,
+        name: config.name,
+        level: 0,
+        experience: 0,
+        maxExperience: 0,
+      };
+      return {
+        ...skill,
+        maxExperience:
+          getSkillUpgradeExperience(skill) ||
+          config.experienceRequired[1] ||
+          100,
+      };
+    }),
   );
 
   // ==================== 计算属性 ====================
@@ -180,13 +190,22 @@ export const usePlayerStore = defineStore("player", () => {
 
   function reset() {
     status.value = { ...GAME_CONFIG.initialStatus };
-    skills.value = SKILL_CONFIGS.map((config) => ({
-      id: config.id,
-      name: config.name,
-      level: 0,
-      experience: 0,
-      maxExperience: config.experienceRequired[1] || 100,
-    }));
+    skills.value = SKILL_CONFIGS.map((config) => {
+      const skill: Skill = {
+        id: config.id,
+        name: config.name,
+        level: 0,
+        experience: 0,
+        maxExperience: 0,
+      };
+      return {
+        ...skill,
+        maxExperience:
+          getSkillUpgradeExperience(skill) ||
+          config.experienceRequired[1] ||
+          100,
+      };
+    });
   }
 
   return {

@@ -35,7 +35,7 @@
     ],
     "condition": {
       "period": ["morning"],
-      "minDay": 2
+      "minDay": 1
     },
     "priority": 10
   },
@@ -74,7 +74,7 @@
     ],
     "condition": {
       "period": ["afternoon"],
-      "minDay": 2
+      "minDay": 1
     },
     "priority": 10
   },
@@ -114,7 +114,7 @@
     ],
     "condition": {
       "period": ["evening"],
-      "minDay": 2
+      "minDay": 1
     },
     "priority": 10
   },
@@ -147,7 +147,7 @@
     ],
     "condition": {
       "period": ["night"],
-      "minDay": 2
+      "minDay": 1
     },
     "priority": 5
   }

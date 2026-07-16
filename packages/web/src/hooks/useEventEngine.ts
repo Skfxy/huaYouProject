@@ -475,6 +475,23 @@ export function useEventEngine() {
     }
   }
 
+  function restoreEngineFromEventId(eventId?: string): boolean {
+    if (!eventId) {
+      currentEvent.value = null;
+      eventHistory.value = [...gameStore.game.history];
+      return false;
+    }
+    const event = allEvents.value.find((e) => e.id === eventId);
+    if (event) {
+      currentEvent.value = event;
+      eventHistory.value = [...gameStore.game.history];
+      chapterEnded.value = false;
+      endingResult.value = null;
+      return true;
+    }
+    return false;
+  }
+
   function reset() {
     currentEvent.value = null;
     eventHistory.value = [];
@@ -504,6 +521,7 @@ export function useEventEngine() {
     calculateEnding,
     checkChapterEnd,
     startGame,
+    restoreEngineFromEventId,
     reset,
   };
 }

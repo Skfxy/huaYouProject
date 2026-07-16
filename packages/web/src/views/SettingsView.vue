@@ -4,21 +4,33 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { useSaveStore } from "@/stores/save.store";
+import { useSettingsStore } from "@/stores/settings.store";
+import BaseModal from "@/components/common/BaseModal.vue";
 
 const router = useRouter();
 const saveStore = useSaveStore();
+const settingsStore = useSettingsStore();
 
-const settings = ref({
-  textSpeed: 50,
-  musicVolume: 80,
-  soundVolume: 80,
-});
+// 重置存档确认弹窗
+const resetConfirmVisible = ref(false);
+// 操作结果提示弹窗
+const resultModalVisible = ref(false);
+const resultModalText = ref("");
 
-function handleReset() {
-  if (confirm("确定要重置所有存档吗？此操作不可恢复！")) {
-    saveStore.reset();
-    alert("存档已重置！");
-  }
+function handleResetClick() {
+  resetConfirmVisible.value = true;
+}
+
+function confirmReset() {
+  saveStore.reset();
+  resultModalText.value = "所有存档已重置";
+  resultModalVisible.value = true;
+}
+
+function resetSettings() {
+  settingsStore.reset();
+  resultModalText.value = "设置已恢复默认";
+  resultModalVisible.value = true;
 }
 
 function goBack() {
@@ -41,13 +53,21 @@ function goBack() {
           <label class="setting-label">文字速度</label>
           <div class="setting-control">
             <input
-              v-model="settings.textSpeed"
+              :value="settingsStore.settings.textSpeed"
               type="range"
               min="10"
               max="100"
               class="setting-slider"
+              @input="
+                settingsStore.updateSetting(
+                  'textSpeed',
+                  Number(($event.target as HTMLInputElement).value),
+                )
+              "
             />
-            <span class="setting-value">{{ settings.textSpeed }}ms</span>
+            <span class="setting-value"
+              >{{ settingsStore.settings.textSpeed }}ms</span
+            >
           </div>
         </div>
 
@@ -55,13 +75,21 @@ function goBack() {
           <label class="setting-label">背景音乐</label>
           <div class="setting-control">
             <input
-              v-model="settings.musicVolume"
+              :value="settingsStore.settings.musicVolume"
               type="range"
               min="0"
               max="100"
               class="setting-slider"
+              @input="
+                settingsStore.updateSetting(
+                  'musicVolume',
+                  Number(($event.target as HTMLInputElement).value),
+                )
+              "
             />
-            <span class="setting-value">{{ settings.musicVolume }}%</span>
+            <span class="setting-value"
+              >{{ settingsStore.settings.musicVolume }}%</span
+            >
           </div>
         </div>
 
@@ -69,14 +97,27 @@ function goBack() {
           <label class="setting-label">音效</label>
           <div class="setting-control">
             <input
-              v-model="settings.soundVolume"
+              :value="settingsStore.settings.soundVolume"
               type="range"
               min="0"
               max="100"
               class="setting-slider"
+              @input="
+                settingsStore.updateSetting(
+                  'soundVolume',
+                  Number(($event.target as HTMLInputElement).value),
+                )
+              "
             />
-            <span class="setting-value">{{ settings.soundVolume }}%</span>
+            <span class="setting-value"
+              >{{ settingsStore.settings.soundVolume }}%</span
+            >
           </div>
+        </div>
+
+        <div class="setting-item">
+          <label class="setting-label">恢复默认设置</label>
+          <button class="reset-button" @click="resetSettings">恢复默认</button>
         </div>
       </div>
 
@@ -85,7 +126,7 @@ function goBack() {
 
         <div class="setting-item">
           <label class="setting-label">重置存档</label>
-          <button class="reset-button" @click="handleReset">
+          <button class="reset-button" @click="handleResetClick">
             重置所有存档
           </button>
         </div>
@@ -100,6 +141,29 @@ function goBack() {
         </div>
       </div>
     </div>
+
+    <!-- 重置存档确认弹窗 -->
+    <BaseModal
+      :show="resetConfirmVisible"
+      title="重置存档"
+      :show-cancel="true"
+      confirm-text="确认重置"
+      cancel-text="取消"
+      @close="resetConfirmVisible = false"
+      @confirm="confirmReset"
+    >
+      <p class="modal-text">确定要重置所有存档吗？此操作不可恢复！</p>
+    </BaseModal>
+
+    <!-- 操作结果提示弹窗 -->
+    <BaseModal
+      :show="resultModalVisible"
+      title="操作完成"
+      confirm-text="知道了"
+      @close="resultModalVisible = false"
+    >
+      <p class="modal-text">{{ resultModalText }}</p>
+    </BaseModal>
   </div>
 </template>
 
@@ -110,6 +174,14 @@ function goBack() {
   display: flex;
   flex-direction: column;
   background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3a 50%, #0a0a2a 100%);
+}
+
+.modal-text {
+  margin: 0;
+  color: #ccc;
+  font-size: 14px;
+  line-height: 1.6;
+  text-align: center;
 }
 
 .settings-header {

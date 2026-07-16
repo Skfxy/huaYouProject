@@ -2,14 +2,11 @@
 // 话游 - 主菜单页面
 
 import { useRouter } from "vue-router";
-import { useGameStore } from "@/stores/game.store";
 import { useSaveStore } from "@/stores/save.store";
 import { onMounted } from "vue";
-// @ts-ignore
 import homeBg from "@/assets/images/home-bg.jpg";
 
 const router = useRouter();
-const gameStore = useGameStore();
 const saveStore = useSaveStore();
 
 onMounted(() => {
@@ -17,7 +14,6 @@ onMounted(() => {
 });
 
 function startNewGame() {
-  gameStore.startGame();
   router.push("/game");
 }
 

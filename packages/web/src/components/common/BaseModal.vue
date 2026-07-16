@@ -1,25 +1,57 @@
 <script setup lang="ts">
-defineProps<{
+interface Props {
   show: boolean;
   title?: string;
-}>();
+  showCancel?: boolean;
+  confirmText?: string;
+  cancelText?: string;
+}
+
+withDefaults(defineProps<Props>(), {
+  title: "",
+  showCancel: false,
+  confirmText: "确认",
+  cancelText: "取消",
+});
 
 const emit = defineEmits<{
   close: [];
+  confirm: [];
+  cancel: [];
 }>();
+
+function handleConfirm() {
+  emit("confirm");
+  emit("close");
+}
+
+function handleCancel() {
+  emit("cancel");
+  emit("close");
+}
 </script>
 
 <template>
   <Teleport to="body">
     <Transition name="modal">
-      <div v-if="show" class="modal-overlay" @click.self="emit('close')">
+      <div v-if="show" class="modal-overlay" @click.self="handleCancel">
         <div class="modal-container">
           <div class="modal-header">
             <h3 v-if="title" class="modal-title">{{ title }}</h3>
-            <button class="modal-close" @click="emit('close')">×</button>
+            <button class="modal-close" @click="handleCancel">×</button>
           </div>
           <div class="modal-body">
             <slot />
+          </div>
+          <div v-if="showCancel || $slots.footer" class="modal-footer">
+            <slot name="footer">
+              <button class="modal-button cancel" @click="handleCancel">
+                {{ cancelText }}
+              </button>
+              <button class="modal-button confirm" @click="handleConfirm">
+                {{ confirmText }}
+              </button>
+            </slot>
           </div>
         </div>
       </div>
@@ -95,6 +127,43 @@ const emit = defineEmits<{
   overflow-y: auto;
 }
 
+.modal-footer {
+  display: flex;
+  gap: 12px;
+  padding: 16px 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  justify-content: flex-end;
+}
+
+.modal-button {
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.modal-button.cancel {
+  background: rgba(255, 255, 255, 0.1);
+  color: #aaa;
+}
+
+.modal-button.cancel:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+.modal-button.confirm {
+  background: rgba(79, 195, 247, 0.2);
+  border-color: rgba(79, 195, 247, 0.5);
+  color: #4fc3f7;
+}
+
+.modal-button.confirm:hover {
+  background: rgba(79, 195, 247, 0.3);
+}
+
 .modal-enter-active,
 .modal-leave-active {
   transition: opacity 0.3s ease;
@@ -139,6 +208,16 @@ const emit = defineEmits<{
   .modal-close {
     width: 36px;
     height: 36px;
+  }
+
+  .modal-footer {
+    padding: 12px 16px;
+    gap: 8px;
+  }
+
+  .modal-button {
+    flex: 1;
+    padding: 10px 16px;
   }
 }
 </style>

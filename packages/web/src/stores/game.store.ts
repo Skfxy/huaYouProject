@@ -10,7 +10,6 @@ import type {
 import {
   TIME_PERIODS,
   TIME_PERIOD_NAMES,
-  START_DAY_OF_WEEK,
   DAYS_OF_WEEK,
 } from "@shared/constants/game.enum";
 import { getDayOfWeek } from "@shared/utils/calculator";
@@ -19,10 +18,10 @@ export const useGameStore = defineStore("game", () => {
   // ==================== 状态 ====================
 
   const time = ref<TimeState>({
-    day: 1,
-    period: "morning",
+    day: 0,
+    period: "night",
     totalDays: 20,
-    dayOfWeek: START_DAY_OF_WEEK,
+    dayOfWeek: getDayOfWeek(0),
     consecutiveRegularSleep: 0,
     stayedUpLate: false,
   });
@@ -162,10 +161,10 @@ export const useGameStore = defineStore("game", () => {
     game.value.isStarted = true;
     game.value.isPaused = false;
     time.value = {
-      day: 1,
-      period: "morning",
+      day: 0,
+      period: "night",
       totalDays: 20,
-      dayOfWeek: START_DAY_OF_WEEK,
+      dayOfWeek: getDayOfWeek(0),
       consecutiveRegularSleep: 0,
       stayedUpLate: false,
     };
@@ -216,10 +215,10 @@ export const useGameStore = defineStore("game", () => {
 
   function reset() {
     time.value = {
-      day: 1,
-      period: "morning",
+      day: 0,
+      period: "night",
       totalDays: 20,
-      dayOfWeek: START_DAY_OF_WEEK,
+      dayOfWeek: getDayOfWeek(0),
       consecutiveRegularSleep: 0,
       stayedUpLate: false,
     };

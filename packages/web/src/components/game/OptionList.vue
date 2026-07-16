@@ -1,34 +1,62 @@
 <script setup lang="ts">
 // 话游 - 选项列表组件
 
-import type { EventOption } from "@shared/types/game.types";
+import { computed } from "vue";
+import type { EventOption, EventCondition } from "@shared/types/game.types";
 
-defineProps<{
-  options: EventOption[];
-  disabled?: boolean;
-}>();
+const props = withDefaults(
+  defineProps<{
+    options: EventOption[];
+    disabled?: boolean;
+    // 选项条件检查函数，返回 false 表示选项不可用
+    checkCondition?: (condition?: EventCondition) => boolean;
+  }>(),
+  {
+    disabled: false,
+    checkCondition: () => true,
+  },
+);
 
 const emit = defineEmits<{
   select: [option: EventOption];
 }>();
 
+interface DisplayOption {
+  option: EventOption;
+  visible: boolean;
+  disabled: boolean;
+}
+
+const displayOptions = computed<DisplayOption[]>(() =>
+  props.options.map((option) => {
+    if (!option.condition) {
+      return { option, visible: true, disabled: false };
+    }
+    const ok = props.checkCondition(option.condition);
+    // 不满足条件的选项隐藏而不是禁用，避免破坏沉浸感
+    return { option, visible: ok, disabled: false };
+  }),
+);
+
 function selectOption(option: EventOption) {
+  if (props.disabled) return;
   emit("select", option);
 }
 </script>
 
 <template>
   <div class="option-list">
-    <button
-      v-for="option in options"
-      :key="option.id"
-      class="option-button"
-      :disabled="disabled"
-      @click="selectOption(option)"
-    >
-      <span class="option-text">{{ option.text }}</span>
-      <span class="option-arrow">→</span>
-    </button>
+    <template v-for="item in displayOptions" :key="item.option.id">
+      <button
+        v-if="item.visible"
+        class="option-button"
+        :disabled="disabled || item.disabled"
+        @click="selectOption(item.option)"
+      >
+        <span class="option-text">{{ item.option.text }}</span>
+        <span class="option-arrow">→</span>
+      </button>
+    </template>
   </div>
 </template>
 

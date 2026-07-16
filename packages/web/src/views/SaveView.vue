@@ -1,22 +1,37 @@
 <script setup lang="ts">
 // 话游 - 存档管理页面
 
-import { onMounted } from "vue";
+import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useSaveStore } from "@/stores/save.store";
 import { useGameStore } from "@/stores/game.store";
+import BaseModal from "@/components/common/BaseModal.vue";
 
 const router = useRouter();
 const saveStore = useSaveStore();
 const gameStore = useGameStore();
 
+// 自定义弹窗状态
+const modalVisible = ref(false);
+const modalTitle = ref("");
+const modalText = ref("");
+// 删除确认弹窗状态
+const deleteConfirmVisible = ref(false);
+const pendingDeleteSlot = ref<number | null>(null);
+
 onMounted(() => {
   saveStore.initSlots();
 });
 
+function showModal(title: string, text: string) {
+  modalTitle.value = title;
+  modalText.value = text;
+  modalVisible.value = true;
+}
+
 function handleSave(slotId: number) {
   if (saveStore.saveToSlot(slotId)) {
-    alert("存档成功！");
+    showModal("存档成功", "存档已成功保存到槽位 " + slotId);
   }
 }
 
@@ -24,18 +39,29 @@ function handleLoad(slotId: number) {
   if (saveStore.loadFromSlot(slotId)) {
     router.push("/game");
   } else {
-    alert("读取失败！");
+    showModal("读取失败", "存档读取失败，请重试");
   }
 }
 
 function handleDelete(slotId: number) {
-  if (confirm("确定要删除这个存档吗？")) {
-    saveStore.deleteSlot(slotId);
+  pendingDeleteSlot.value = slotId;
+  deleteConfirmVisible.value = true;
+}
+
+function confirmDelete() {
+  if (pendingDeleteSlot.value !== null) {
+    saveStore.deleteSlot(pendingDeleteSlot.value);
+    pendingDeleteSlot.value = null;
   }
 }
 
 function goBack() {
-  router.push("/");
+  // 如果游戏已开始，返回游戏界面；否则返回首页
+  if (gameStore.game.isStarted) {
+    router.push("/game");
+  } else {
+    router.push("/");
+  }
 }
 </script>
 
@@ -115,6 +141,29 @@ function goBack() {
         </div>
       </div>
     </div>
+
+    <!-- 信息提示弹窗 -->
+    <BaseModal
+      :show="modalVisible"
+      :title="modalTitle"
+      confirm-text="知道了"
+      @close="modalVisible = false"
+    >
+      <p class="modal-text">{{ modalText }}</p>
+    </BaseModal>
+
+    <!-- 删除确认弹窗 -->
+    <BaseModal
+      :show="deleteConfirmVisible"
+      title="删除存档"
+      :show-cancel="true"
+      confirm-text="确认删除"
+      cancel-text="取消"
+      @close="deleteConfirmVisible = false"
+      @confirm="confirmDelete"
+    >
+      <p class="modal-text">确定要删除这个存档吗？此操作不可恢复。</p>
+    </BaseModal>
   </div>
 </template>
 
@@ -125,6 +174,14 @@ function goBack() {
   display: flex;
   flex-direction: column;
   background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3a 50%, #0a0a2a 100%);
+}
+
+.modal-text {
+  margin: 0;
+  color: #ccc;
+  font-size: 14px;
+  line-height: 1.6;
+  text-align: center;
 }
 
 .save-header {

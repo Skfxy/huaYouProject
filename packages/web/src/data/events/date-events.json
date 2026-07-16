@@ -29,7 +29,7 @@
     "condition": {
       "dayOfWeek": [6],
       "period": ["morning"],
-      "minDay": 2
+      "minDay": 1
     },
     "priority": 80
   },
@@ -58,7 +58,7 @@
       "dayOfWeek": [6],
       "period": ["evening"],
       "minEnergy": 25,
-      "minDay": 2
+      "minDay": 1
     },
     "priority": 60
   },
@@ -90,7 +90,7 @@
     "condition": {
       "dayOfWeek": [0],
       "period": ["morning"],
-      "minDay": 2
+      "minDay": 1
     },
     "priority": 80
   },

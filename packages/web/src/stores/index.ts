@@ -3,3 +3,4 @@
 export { usePlayerStore } from "./player.store";
 export { useGameStore } from "./game.store";
 export { useSaveStore } from "./save.store";
+export { useSettingsStore } from "./settings.store";

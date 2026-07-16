@@ -6,16 +6,19 @@ import { useRouter } from "vue-router";
 import { useGameStore } from "@/stores/game.store";
 import { usePlayerStore } from "@/stores/player.store";
 import { useSaveStore } from "@/stores/save.store";
+import { useSettingsStore } from "@/stores/settings.store";
 import { useEventEngine } from "@/hooks/useEventEngine";
 import StatusBar from "@/components/game/StatusBar.vue";
 import DialogBox from "@/components/game/DialogBox.vue";
 import OptionList from "@/components/game/OptionList.vue";
+import BaseModal from "@/components/common/BaseModal.vue";
 import type { EventOption } from "@shared/types/game.types";
 
 const router = useRouter();
 const gameStore = useGameStore();
 const playerStore = usePlayerStore();
 const saveStore = useSaveStore();
+const settingsStore = useSettingsStore();
 const {
   currentEvent,
   startGame,
@@ -25,6 +28,8 @@ const {
   showSpecialDateHint,
   chapterEnded,
   endingResult,
+  restoreEngineFromEventId,
+  checkEventCondition,
   reset: resetEngine,
 } = useEventEngine();
 
@@ -32,6 +37,9 @@ const showOptions = ref(false);
 const isTextComplete = ref(false);
 const showEffectHint = ref(false);
 const effectHint = ref("");
+const showBackConfirm = ref(false);
+
+const dialogSpeed = computed(() => settingsStore.settings.textSpeed);
 
 const endingGradeColor = computed(() => {
   if (!endingResult.value) return "#4fc3f7";
@@ -67,10 +75,14 @@ const endingTypeText = computed(() => {
 
 onMounted(() => {
   if (!gameStore.game.isStarted) {
+    // 新游戏：初始化所有状态
     gameStore.startGame();
     playerStore.reset();
     resetEngine();
     startGame();
+  } else if (gameStore.game.currentEvent) {
+    // 读档：恢复事件引擎状态
+    restoreEngineFromEventId(gameStore.game.currentEvent);
   }
 });
 
@@ -134,6 +146,7 @@ function selectOption(option: EventOption) {
 }
 
 function goToHome() {
+  showBackConfirm.value = false;
   router.push("/");
 }
 
@@ -159,7 +172,9 @@ function restartGame() {
 <template>
   <div class="game-view">
     <div class="game-header">
-      <button class="back-button" @click="goToHome">← 返回</button>
+      <button class="back-button" @click="showBackConfirm = true">
+        ← 返回
+      </button>
       <div class="header-center">
         <span class="chapter-title">第一章：重启的2018</span>
         <span v-if="!chapterEnded" class="day-progress"
@@ -174,29 +189,25 @@ function restartGame() {
         <StatusBar />
       </div>
 
-      <div v-if="!chapterEnded" class="date-info">
-        <span class="day-of-week">{{ gameStore.dayOfWeekName }}</span>
-        <span v-if="gameStore.isWeekend" class="weekend-tag">周末</span>
-        <span class="period-badge">{{ gameStore.periodName }}</span>
+      <div class="hint-stack">
+        <Transition name="fade">
+          <div v-if="showEffectHint" class="effect-hint">
+            {{ effectHint }}
+          </div>
+        </Transition>
+
+        <Transition name="fade">
+          <div v-if="showSpecialDateHint" class="special-hint">
+            {{ specialDateHint }}
+          </div>
+        </Transition>
+
+        <Transition name="fade">
+          <div v-if="saveStore.showAutoSaveHint" class="autosave-hint">
+            💾 已自动存档
+          </div>
+        </Transition>
       </div>
-
-      <Transition name="fade">
-        <div v-if="showEffectHint" class="effect-hint">
-          {{ effectHint }}
-        </div>
-      </Transition>
-
-      <Transition name="fade">
-        <div v-if="showSpecialDateHint" class="special-hint">
-          {{ specialDateHint }}
-        </div>
-      </Transition>
-
-      <Transition name="fade">
-        <div v-if="saveStore.showAutoSaveHint" class="autosave-hint">
-          💾 已自动存档
-        </div>
-      </Transition>
 
       <!-- 结局界面 -->
       <div v-if="chapterEnded && endingResult" class="ending-section">
@@ -273,7 +284,7 @@ function restartGame() {
         <DialogBox
           :key="currentEvent.id"
           :text="currentEvent.text"
-          :speed="50"
+          :speed="dialogSpeed"
           @click="onTextComplete"
         />
       </div>
@@ -313,9 +324,27 @@ function restartGame() {
         v-if="showOptions && currentEvent && !chapterEnded"
         class="options-section"
       >
-        <OptionList :options="currentEvent.options" @select="selectOption" />
+        <OptionList
+          :options="currentEvent.options"
+          :check-condition="checkEventCondition"
+          @select="selectOption"
+        />
       </div>
     </div>
+
+    <BaseModal
+      :show="showBackConfirm"
+      title="返回主菜单"
+      :show-cancel="true"
+      confirm-text="确认返回"
+      cancel-text="继续游戏"
+      @close="showBackConfirm = false"
+      @confirm="goToHome"
+    >
+      <p class="back-confirm-text">
+        返回主菜单后当前未保存的进度可能会丢失，是否继续？
+      </p>
+    </BaseModal>
   </div>
 </template>
 
@@ -387,98 +416,68 @@ function restartGame() {
   width: 100%;
 }
 
-.date-info {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  justify-content: center;
-}
-
-.day-of-week {
-  font-size: 14px;
-  color: #aaa;
-}
-
-.weekend-tag {
-  background: rgba(255, 193, 7, 0.2);
-  color: #ffc107;
-  padding: 2px 8px;
-  border-radius: 4px;
-  font-size: 12px;
-}
-
-.period-badge {
-  background: rgba(79, 195, 247, 0.2);
-  color: #4fc3f7;
-  padding: 2px 8px;
-  border-radius: 4px;
-  font-size: 12px;
-}
-
-.effect-hint {
+.hint-stack {
   position: fixed;
   top: 80px;
   left: 50%;
   transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  z-index: 100;
+  pointer-events: none;
+  width: max-content;
+  max-width: 90%;
+}
+
+.back-confirm-text {
+  margin: 0;
+  color: #ccc;
+  font-size: 14px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.effect-hint {
   background: rgba(79, 195, 247, 0.9);
   color: #fff;
   padding: 8px 16px;
   border-radius: 20px;
   font-size: 14px;
   font-weight: bold;
-  z-index: 100;
   animation: slideDown 0.3s ease;
 }
 
 .special-hint {
-  position: fixed;
-  top: 120px;
-  left: 50%;
-  transform: translateX(-50%);
   background: rgba(156, 39, 176, 0.9);
   color: #fff;
   padding: 10px 20px;
   border-radius: 20px;
   font-size: 14px;
   font-weight: bold;
-  z-index: 100;
   animation: slideDown 0.3s ease;
-  max-width: 90%;
+  max-width: 100%;
   text-align: center;
 }
 
 .autosave-hint {
-  position: fixed;
-  top: 160px;
-  right: 24px;
   background: rgba(76, 175, 80, 0.9);
   color: #fff;
   padding: 8px 16px;
   border-radius: 20px;
   font-size: 13px;
-  z-index: 100;
-  animation: slideIn 0.3s ease;
-}
-
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateX(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+  animation: slideDown 0.3s ease;
 }
 
 @keyframes slideDown {
   from {
     opacity: 0;
-    transform: translateX(-50%) translateY(-10px);
+    transform: translateY(-10px);
   }
   to {
     opacity: 1;
-    transform: translateX(-50%) translateY(0);
+    transform: translateY(0);
   }
 }
 
@@ -747,21 +746,22 @@ function restartGame() {
     font-size: 13px;
   }
 
-  .effect-hint {
+  .hint-stack {
     top: 64px;
+    gap: 6px;
+  }
+
+  .effect-hint {
     font-size: 13px;
     padding: 6px 12px;
   }
 
   .special-hint {
-    top: 100px;
     font-size: 13px;
     padding: 8px 16px;
   }
 
   .autosave-hint {
-    top: 136px;
-    right: 16px;
     font-size: 12px;
     padding: 6px 12px;
   }
@@ -826,20 +826,6 @@ function restartGame() {
   .game-content {
     padding: 12px;
     gap: 12px;
-  }
-
-  .date-info {
-    gap: 6px;
-  }
-
-  .day-of-week {
-    font-size: 12px;
-  }
-
-  .weekend-tag,
-  .period-badge {
-    font-size: 11px;
-    padding: 1px 6px;
   }
 
   .event-title h2 {
